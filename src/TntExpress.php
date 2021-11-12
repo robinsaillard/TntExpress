@@ -15,6 +15,7 @@ class TntExpress {
     public function __construct($userId, $password) {
         $this->userId = $userId;
         $this->password = $password;
+        $this->initXml();
     }
 
     

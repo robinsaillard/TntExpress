@@ -46,6 +46,12 @@ class Address extends AbstractXml{
      * @var string
      * Element is optional
      */
+    public $province; 
+
+    /**
+     * @var string
+     * Element is optional
+     */
     public $postcode; 
 
     /**
@@ -80,7 +86,7 @@ class Address extends AbstractXml{
      *
      * @return  string
      */ 
-    public function getAddressLine2()
+    public function getAddressLine2() : ?string
     {
         return $this->addressLine2;
     }
@@ -90,7 +96,7 @@ class Address extends AbstractXml{
      *
      * @return  string
      */ 
-    public function getAddressLine3()
+    public function getAddressLine3() : ?string
     {
         return $this->addressLine3;
     }
@@ -100,7 +106,7 @@ class Address extends AbstractXml{
      *
      * @return  string
      */ 
-    public function getTown()
+    public function getTown() : ?string
     {
         return $this->town;
     }
@@ -110,7 +116,7 @@ class Address extends AbstractXml{
      *
      * @return  string
      */ 
-    public function getExactMatch()
+    public function getExactMatch() : ?string
     {
         return $this->exactMatch;
     }
@@ -120,7 +126,7 @@ class Address extends AbstractXml{
      *
      * @return  string
      */ 
-    public function getPostcode()
+    public function getPostcode() : ?string
     {
         return $this->postcode;
     }
@@ -130,7 +136,7 @@ class Address extends AbstractXml{
      *
      * @return  string
      */ 
-    public function getCountry()
+    public function getCountry() 
     {
         return $this->country;
     }
@@ -170,7 +176,7 @@ class Address extends AbstractXml{
      *
      * @return  self
      */ 
-    public function setAddressLine2(string $addressLine2)
+    public function setAddressLine2(?string $addressLine2)
     {
         $this->addressLine2 = $addressLine2;
 
@@ -184,7 +190,7 @@ class Address extends AbstractXml{
      *
      * @return  self
      */ 
-    public function setAddressLine3(string $addressLine3)
+    public function setAddressLine3(?string $addressLine3)
     {
         $this->addressLine3 = $addressLine3;
 
@@ -198,7 +204,7 @@ class Address extends AbstractXml{
      *
      * @return  self
      */ 
-    public function setTown(string $town)
+    public function setTown(?string $town)
     {
         $this->town = $town;
 
@@ -212,7 +218,7 @@ class Address extends AbstractXml{
      *
      * @return  self
      */ 
-    public function setExactMatch(string $exactMatch)
+    public function setExactMatch(?string $exactMatch)
     {
         $this->exactMatch = $exactMatch;
 
@@ -226,7 +232,7 @@ class Address extends AbstractXml{
      *
      * @return  self
      */ 
-    public function setPostcode(string $postcode)
+    public function setPostcode(?string $postcode)
     {
         $this->postcode = $postcode;
 
@@ -243,6 +249,30 @@ class Address extends AbstractXml{
     public function setCountry(string $country)
     {
         $this->country = $country;
+
+        return $this;
+    }
+
+    /**
+     * Get element is optional
+     *
+     * @return  string
+     */ 
+    public function getProvince() : ?string
+    {
+        return $this->province;
+    }
+
+    /**
+     * Set element is optional
+     *
+     * @param  string  $province  Element is optional
+     *
+     * @return  self
+     */ 
+    public function setProvince(?string $province)
+    {
+        $this->province = $province;
 
         return $this;
     }
