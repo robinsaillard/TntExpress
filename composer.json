@@ -1,0 +1,25 @@
+{
+    "name": "robinsaillard/tnt-express",
+    "type": "library",
+    "description": "TNT Express",
+    "keywords": ["tnt", "tnt express", "tnt tracking", "tnt shipping"],
+    "license": "MIT",
+    "homepage": "https://github.com/robinsaillard/TntExpress",
+    "authors": [
+        {
+            "name": "Robin Saillard",
+            "email": "contact@robin-saillard.fr"
+        }
+    ],
+    "require": {
+        "php": ">=7.0",
+        "lib-libxml": "*"
+    },
+    "require-dev": {
+    },
+    "autoload": {
+        "psr-4": {
+            "RS\\TntExpress\\": "src/"
+        }
+    }
+}
