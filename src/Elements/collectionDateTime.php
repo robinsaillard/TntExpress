@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Service\Etiquette\Tnt\Inter\Entity;
+namespace RS\TntExpress\Elements;
 
-use App\Service\Etiquette\Tnt\Inter\Entity\AbstractXml;
 use DateTime;
+use RS\TntExpress\Elements\AbstractXml;
 
 class consignmentIdentity extends AbstractXml {
 

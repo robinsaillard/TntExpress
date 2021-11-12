@@ -1,6 +1,6 @@
 <?php 
 
-namespace App\Service\Etiquette\Tnt\Inter;
+namespace RS\TntExpress;
 
 use XMLWriter;
 

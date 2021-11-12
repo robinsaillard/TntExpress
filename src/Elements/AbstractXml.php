@@ -1,9 +1,10 @@
 <?php
 
 
-namespace App\Service\Etiquette\Tnt\Inter\Entity;
+namespace RS\TntExpress\Elements;
 
-use App\Service\Etiquette\Tnt\Inter\XmlWriterOverride;
+use RS\TntExpress\XmlWriterOverride;
+
 
 abstract class AbstractXml
 {
