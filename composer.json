@@ -16,8 +16,6 @@
         "php": ">=7.0",
         "lib-libxml": "*"
     },
-    "require-dev": {
-    },
     "autoload": {
         "psr-4": {
             "RS\\TntExpress\\": "src/"
