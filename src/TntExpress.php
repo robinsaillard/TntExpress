@@ -44,11 +44,12 @@ class TntExpress {
         curl_close($ch); 
     }
 
-    public function renderHtml($xml)
+    public function renderHtml($xml, $cssDir = "bundle/tntexpress/css/", $imgDir = "bundle/tntexpress/images/")
     {
         $xslt = new \xsltProcessor();
         $xslt->importStyleSheet(\DomDocument::load(__DIR__. '/Views/HTMLRoutingLabelRenderer.xsl'));
-        $xslt->setParameter('', 'css_dir', __DIR__. '/Views/');
+        $xslt->setParameter('', 'css_dir', $cssDir);
+        $xslt->setParameter('', 'images_dir', $imgDir);
         return $xslt->transformToXML(\DomDocument::loadXML($xml));
     }
 
