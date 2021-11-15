@@ -47,7 +47,7 @@ class TntExpress {
     public function renderHtml($xml)
     {
         $xslt = new \xsltProcessor();
-        $xslt->importStyleSheet(\DomDocument::load(__DIR__. 'src/Views/HTMLRoutingLabelRenderer.xsl'));
+        $xslt->importStyleSheet(\DomDocument::load(__DIR__. '/Views/HTMLRoutingLabelRenderer.xsl'));
         return $xslt->transformToXML(\DomDocument::loadXML($xml));
     }
 
