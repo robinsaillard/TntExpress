@@ -8,7 +8,7 @@
 
   <!--Logo-->
   <div id="logoFR">
-    <img src='{$images_dir}/logo.jpg' alt='logo' id="tntLogo" />
+    <img src='{$images_dir}/logo_orig.jpg' alt='logo' id="tntLogo" />
   </div>
   
     <!--Contact Details-->
