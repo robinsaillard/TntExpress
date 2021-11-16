@@ -3,6 +3,7 @@
 namespace RS\TntExpress;
 
 use DateTime;
+use RS\TntExpress\Elements\Account;
 use RS\TntExpress\TntExpress;
 use RS\TntExpress\Elements\Address;
 use RS\TntExpress\Elements\CollectionDateTime;
@@ -87,5 +88,15 @@ class TntExpressLabel extends TntExpress{
                       ->setOption($option);
         $this->createElement("product", $this->product);
         return $this->product;
+    }
+
+    
+    public function setAccount(string $accountNumber, string $accountCountry)
+    {
+        $this->account = new Account();
+        $this->account->setAccountNumber($accountNumber)
+                      ->setAccountCountry($accountCountry);
+        $this->createElement("account", $this->account);
+        return $this->account;
     }
 }
