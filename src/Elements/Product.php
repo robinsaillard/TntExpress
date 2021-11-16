@@ -149,7 +149,7 @@ class Product extends AbstractXml {
      *
      * @return  self
      */ 
-    public function setOption(string $option)
+    public function setOption(?string $option)
     {
         $this->option = $option;
 
