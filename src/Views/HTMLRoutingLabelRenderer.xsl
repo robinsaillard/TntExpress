@@ -55,7 +55,7 @@
     <xsl:if test="$numberBrokenRules >0">   
       <!--Logo -->
       <span id="errorLogo">
-          <img src='{$images_dir}/logo.jpg' alt='logo' id="tntLogo" />
+          <img src='{$images_dir}logo_orig.jpg' alt='logo' id="tntLogo" />
       </span>
       <span id="errorHeader">ExpressLabel Error(s)</span>   
     
