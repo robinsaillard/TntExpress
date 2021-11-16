@@ -2,10 +2,10 @@
 
 namespace RS\TntExpress;
 
-use RS\TntExpress\Elements\Address;
 use RS\TntExpress\TntExpress;
+use RS\TntExpress\Elements\Address;
 
-class TntExpressLabel {
+class TntExpressLabel extends TntExpress{
 
     public $sender; 
     public $delivery; 

@@ -4,7 +4,7 @@ namespace RS\TntExpress;
 
 use RS\TntExpress\XmlWriterOverride;
 
-class TntExpress {
+abstract class TntExpress {
 
     private $errorCode = 0;
     private $errorMessage = "";
