@@ -10,6 +10,10 @@ class TntExpressLabel extends TntExpress{
     public $sender; 
     public $delivery; 
 
+
+    public function __construct($userId, $password) {
+        parent::__construct($userId, $password);
+    }
     
     public function setSender(string $name, string $addressLine1, string $addressLine2 = null, string $addressLine3 = null, 
                               string $town, string $exactMatch = null, string $province = null, string $postcode = null , string $country)
