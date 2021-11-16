@@ -8,7 +8,9 @@ use RS\TntExpress\TntExpress;
 class TntExpressLabel {
 
     public $sender; 
+    public $delivery; 
 
+    
     public function setSender(string $name, string $addressLine1, string $addressLine2 = null, string $addressLine3 = null, 
                               string $town, string $exactMatch = null, string $province = null, string $postcode = null , string $country)
     {
@@ -22,14 +24,15 @@ class TntExpressLabel {
                ->setProvince($province)
                ->setPostcode($postcode)
                ->setCountry($country);
-        return $sender; 
+        $this->sender = $sender;
+        return $this->sender; 
     }
 
     public function setDelivery(string $name, string $addressLine1, string $addressLine2 = null, string $addressLine3 = null, 
                                 string $town, string $exactMatch = null, string $province = null, string $postcode = null , string $country)
     {
-        $sender = new Address();
-        $sender->setName($name)
+        $delivery = new Address();
+        $delivery->setName($name)
         ->setAddressLine1($addressLine1)
         ->setAddressLine2($addressLine2)
         ->setAddressLine3($addressLine3)
@@ -38,7 +41,8 @@ class TntExpressLabel {
         ->setProvince($province)
         ->setPostcode($postcode)
         ->setCountry($country);
-        return $sender; 
+        $this->delivery = $delivery;
+        return $delivery; 
     }
 
 }
