@@ -8,6 +8,7 @@ use RS\TntExpress\TntExpress;
 use RS\TntExpress\Elements\Address;
 use RS\TntExpress\Elements\CollectionDateTime;
 use RS\TntExpress\Elements\ConsignmentIdentity;
+use RS\TntExpress\Elements\OptionalElements;
 use RS\TntExpress\Elements\Product;
 
 class TntExpressLabel extends TntExpress{
@@ -17,6 +18,7 @@ class TntExpressLabel extends TntExpress{
     public $consignmentIdentity; 
     public $collectionDateTime; 
     public $product; 
+    public $optionalElements;
     
     public $url = 'https://express.tnt.com/expresslabel/documentation/getlabel'; 
 
@@ -90,7 +92,7 @@ class TntExpressLabel extends TntExpress{
         return $this->product;
     }
 
-    
+
     public function setAccount(string $accountNumber, string $accountCountry)
     {
         $this->account = new Account();
@@ -98,5 +100,18 @@ class TntExpressLabel extends TntExpress{
                       ->setAccountCountry($accountCountry);
         $this->createElement("account", $this->account);
         return $this->account;
+    }
+
+    public function setOptionalElements(string $bulkShipment = null , string $specialInstructions = null , string $cashAmount = null , string $cashCurrency = null , string $cashType = null , string $customControlled= null, string $termsOfPayment = null)
+    {
+        $this->optionalElements = new OptionalElements(); 
+        $this->optionalElements->setBulkShipment($bulkShipment)
+                               ->setSpecialInstructions($specialInstructions)
+                               ->setCashAmount($cashAmount)
+                               ->setCashCurrency($cashCurrency)
+                               ->setCashType($cashType)
+                               ->setCustomControlled($customControlled)
+                               ->setTermsOfPayment($termsOfPayment); 
+        return $this->optionalElements;
     }
 }
