@@ -69,13 +69,22 @@ abstract class TntExpress {
         $this->xml->setIndent(true);
     }
 
-    public function createElement($element, $xmlContent)
+    public function startDocument()
+    {
+        $this->xml->startDocument("1.0","UTF-8"); 
+    }
+
+    public function createElement($element, $object)
     {
         $this->xml->startElement($element); 
-        $this->xml->writeRaw($xmlContent->getAsXml()); 
+        $this->xml->writeRaw($object->getAsXml()); 
         $this->xml->endElement();
     }
 
+    public function flush()
+    {
+        return $this->xml->flush();
+    }
 
     /**
      * Get the value of errorCode

@@ -4,7 +4,7 @@ namespace RS\TntExpress\Elements;
 
 use RS\TntExpress\Elements\AbstractXml;
 
-class consignmentIdentity extends AbstractXml{
+class ConsignmentIdentity extends AbstractXml{
 
     /**
      * @var string

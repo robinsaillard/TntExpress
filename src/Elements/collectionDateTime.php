@@ -5,7 +5,7 @@ namespace RS\TntExpress\Elements;
 use DateTime;
 use RS\TntExpress\Elements\AbstractXml;
 
-class collectionDateTime extends AbstractXml {
+class CollectionDateTime extends AbstractXml {
 
     /**
      * @var string
