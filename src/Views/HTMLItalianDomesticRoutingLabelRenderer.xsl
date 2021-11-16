@@ -7,7 +7,7 @@
 
   <!--Logo-->
   <div id="logoIT">
-    <img src='{$images_dir}/logo_orig.jpg' alt='logo' id="tntLogo" />
+    <img src='{$images_dir}logo_orig.jpg' alt='logo' id="tntLogo" />
   </div>
   
   <!--Market & Transport Type-->

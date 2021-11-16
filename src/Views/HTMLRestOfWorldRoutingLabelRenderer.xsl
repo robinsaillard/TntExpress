@@ -6,7 +6,7 @@
 <div id="box">
   <!--Logo-->
   <div id="logo">
-    <img src='{$images_dir}/logo_orig.jpg' alt='logo' id="tntLogo" />
+    <img src='{$images_dir}logo_orig.jpg' alt='logo' id="tntLogo" />
   </div>
   
   <!--Market & Transport Type-->

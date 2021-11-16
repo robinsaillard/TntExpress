@@ -46,11 +46,12 @@ class TntExpress {
 
     public function renderHtml($xml, $cssDir = null , $imgDir = null)
     {
+        $scheme = $_SERVER['REQUEST_SCHEME'] . '://';
         if (is_null($cssDir)) {
-            $cssDir = "https://". $_SERVER['SERVER_NAME'] . "/bundles/tntexpress/css/";
+            $cssDir = $scheme . $_SERVER['SERVER_NAME'] . "/bundles/tntexpress/css/";
         }
         if (is_null($imgDir)) {
-            $imgDir = "https://".  $_SERVER['SERVER_NAME']."/bundles/tntexpress/images/"; 
+            $imgDir = $scheme .  $_SERVER['SERVER_NAME']."/bundles/tntexpress/images/"; 
         }
         $xslt = new \xsltProcessor();
         $xslt->importStyleSheet(\DomDocument::load(__DIR__. '/Views/HTMLRoutingLabelRenderer.xsl'));
