@@ -112,6 +112,7 @@ class TntExpressLabel extends TntExpress{
                                ->setCashType($cashType)
                                ->setCustomControlled($customControlled)
                                ->setTermsOfPayment($termsOfPayment); 
+        $this->xml->getAsXml();
         return $this->optionalElements;
     }
 }
