@@ -11,18 +11,20 @@ abstract class TntExpress {
     private $socketResponse = "";
     private $userId; 
     private $password;
+    private $url; 
 
-    public function __construct($userId, $password) {
+    public function __construct($userId, $password, $url) {
         $this->userId = $userId;
         $this->password = $password;
+        $this->url = $url;
         $this->initXml();
     }
 
     
-    public function httpPost($url, $strRequest)
+    public function httpPost($strRequest)
     {
         $ch=curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_URL, $this->url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         $userPass = "";
         if ((trim($this->userId)!="") && (trim($this->password)!="")) {
@@ -31,7 +33,7 @@ abstract class TntExpress {
         }
         curl_setopt($ch, CURLOPT_POST, 1) ;
         curl_setopt($ch, CURLOPT_POSTFIELDS, $strRequest);
-        $isSecure = strpos($url,"https://");
+        $isSecure = strpos($this->url,"https://");
 
         if ($isSecure===0) {
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
@@ -65,6 +67,13 @@ abstract class TntExpress {
         $this->xml = new XmlWriterOverride();
         $this->xml->openMemory();
         $this->xml->setIndent(true);
+    }
+
+    public function createElement($element, $xmlContent)
+    {
+        $this->xml->startElement($element); 
+        $this->xml->writeRaw($xmlContent->getAsXml()); 
+        $this->xml->endElement();
     }
 
 

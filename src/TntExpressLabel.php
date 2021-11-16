@@ -9,10 +9,13 @@ class TntExpressLabel extends TntExpress{
 
     public $sender; 
     public $delivery; 
+    public $url = 'https://express.tnt.com/expresslabel/documentation/getlabel'; 
 
-
-    public function __construct($userId, $password) {
-        parent::__construct($userId, $password);
+    public function __construct($userId, $password, $url = null) {
+        if(!is_null($url)){
+            $this->url = $url;
+        }
+        parent::__construct($userId, $password, $this->url);
     }
     
     public function setSender(string $name, string $addressLine1, string $addressLine2 = null, string $addressLine3 = null, 
@@ -28,7 +31,7 @@ class TntExpressLabel extends TntExpress{
                ->setProvince($province)
                ->setPostcode($postcode)
                ->setCountry($country);
-        $this->sender = $sender;
+        $this->sender = $this->createElement("sender", $sender->getAsXml());
         return $this->sender; 
     }
 
@@ -45,8 +48,8 @@ class TntExpressLabel extends TntExpress{
         ->setProvince($province)
         ->setPostcode($postcode)
         ->setCountry($country);
-        $this->delivery = $delivery;
-        return $delivery; 
+        $this->delivery = $this->createElement("delivery", $delivery->getAsXml());
+        return $this->delivery; 
     }
 
 }
