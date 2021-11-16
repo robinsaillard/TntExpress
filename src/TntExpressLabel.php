@@ -31,7 +31,7 @@ class TntExpressLabel extends TntExpress{
                ->setProvince($province)
                ->setPostcode($postcode)
                ->setCountry($country);
-        $this->sender = $this->createElement("sender", $sender->getAsXml());
+        $this->sender = $this->createElement("sender", $sender);
         return $this->sender; 
     }
 
@@ -48,7 +48,7 @@ class TntExpressLabel extends TntExpress{
         ->setProvince($province)
         ->setPostcode($postcode)
         ->setCountry($country);
-        $this->delivery = $this->createElement("delivery", $delivery->getAsXml());
+        $this->delivery = $this->createElement("delivery", $delivery);
         return $this->delivery; 
     }
 
