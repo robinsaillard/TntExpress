@@ -37,8 +37,10 @@ class CollectionDateTime extends AbstractXml {
         $datetime = new DateTime(); 
         if (is_null($collectionDateTime)) {
             $this->collectionDateTime = $datetime->format('Y-m-dTH:i:s');
+            $this->xml->writeElementCData('collectionDateTime', $this->collectionDateTime);
         }else {
             $this->collectionDateTime = $collectionDateTime->format('Y-m-dTH:i:s');
+            $this->xml->writeElementCData('collectionDateTime', $this->collectionDateTime);
         }
         return $this;
     }

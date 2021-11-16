@@ -49,7 +49,7 @@ class ConsignmentIdentity extends AbstractXml{
     public function setConsignmentNumber(string $consignmentNumber)
     {
         $this->consignmentNumber = $consignmentNumber;
-
+        $this->xml->writeElementCData('consignmentNumber', $this->consignmentNumber);
         return $this;
     }
 
@@ -63,7 +63,7 @@ class ConsignmentIdentity extends AbstractXml{
     public function setCustomerReference(string $customerReference)
     {
         $this->customerReference = $customerReference;
-
+        $this->xml->writeElementCData('customerReference', $this->customerReference);
         return $this;
     }
 }

@@ -96,7 +96,7 @@ class Product extends AbstractXml {
     public function setLineOfBusiness(string $lineOfBusiness)
     {
         $this->lineOfBusiness = $lineOfBusiness;
-
+        $this->xml->writeElementCData('lineOfBusiness', $this->lineOfBusiness);
         return $this;
     }
 
@@ -110,7 +110,7 @@ class Product extends AbstractXml {
     public function setGroupId(string $groupId)
     {
         $this->groupId = $groupId;
-
+        $this->xml->writeElementCData('groupId', $this->groupId);
         return $this;
     }
 
@@ -124,7 +124,7 @@ class Product extends AbstractXml {
     public function setSubGroupId(string $subGroupId)
     {
         $this->subGroupId = $subGroupId;
-
+        $this->xml->writeElementCData('subGroupId', $this->subGroupId);
         return $this;
     }
 
@@ -138,7 +138,7 @@ class Product extends AbstractXml {
     public function setType(string $type)
     {
         $this->type = $type;
-
+        $this->xml->writeElementCData('type', $this->type);
         return $this;
     }
 
@@ -152,7 +152,7 @@ class Product extends AbstractXml {
     public function setOption(?string $option)
     {
         $this->option = $option;
-
+        $this->xml->writeElementCData('option', $this->option);
         return $this;
     }
 }
