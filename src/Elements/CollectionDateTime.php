@@ -28,7 +28,7 @@ class CollectionDateTime extends AbstractXml {
     /**
      * Set element is required
      *
-     * @param  string  $collectionDateTime  Element is required
+     * @param  DateTime $collectionDateTime  Element is required
      *
      * @return  self
      */ 
