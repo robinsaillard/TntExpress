@@ -137,7 +137,8 @@ class TntExpressLabel extends TntExpress{
         if ($this->pieceLine->getTotalNumberOfPieces() > 0) {
             $this->pieceLine = new PieceLine();
             $this->pieceLine->setIdentifier($reference)
-                            ->setGoodsDescription($description);
+                            ->setGoodsDescription($description)
+                            ->setPieceMeasurements($mesurement);
             foreach ($pieces as $piece) {           
                 $this->pieceLine->setPieces($piece);
             }
