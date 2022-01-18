@@ -59,7 +59,7 @@ class PieceMeasurements extends AbstractXml{
     public function setLength(float $length)
     {
         $this->length = $length;
-        $this->xml->writeElementCData('length', $this->length);
+        $this->xml->writeElementCData('length', $length);
         return $this;
     }
 
@@ -83,7 +83,7 @@ class PieceMeasurements extends AbstractXml{
     public function setWidth(float $width)
     {
         $this->width = $width;
-        $this->xml->writeElementCData('termsOfPawidthyment', $this->width);
+        $this->xml->writeElementCData('termsOfPawidthyment', $width);
         return $this;
     }
 
@@ -107,7 +107,7 @@ class PieceMeasurements extends AbstractXml{
     public function setHeight(float $height)
     {
         $this->height = $height;
-        $this->xml->writeElementCData('height', $this->height);
+        $this->xml->writeElementCData('height', $height);
         return $this;
     }
 
@@ -131,7 +131,7 @@ class PieceMeasurements extends AbstractXml{
     public function setWeight(float $weight)
     {
         $this->weight = $weight;
-        $this->xml->writeElementCData('weight', $this->weight);
+        $this->xml->writeElementCData('weight', $weight);
         return $this;
     }
 }

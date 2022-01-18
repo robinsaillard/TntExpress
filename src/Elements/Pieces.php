@@ -45,10 +45,12 @@ class Pieces extends AbstractXml {
     {     
         if (is_array($sequenceNumbers)) {
             $this->sequenceNumbers = implode(",",$sequenceNumbers);
+            $this->xml->writeElementCData('sequenceNumbers', implode(",",$sequenceNumbers));
         }else {
             $this->sequenceNumbers = $sequenceNumbers;
+            $this->xml->writeElementCData('sequenceNumbers', $sequenceNumbers);
         }
-        $this->xml->writeElementCData('sequenceNumbers', $this->sequenceNumbers);
+       
         return $this;
     }
 
@@ -72,7 +74,7 @@ class Pieces extends AbstractXml {
     public function setPieceReference(string $pieceReference)
     {
         $this->pieceReference = $pieceReference;
-        $this->xml->writeElementCData('pieceReference', $this->pieceReference);
+        $this->xml->writeElementCData('pieceReference', $pieceReference);
         return $this;
     }
 }
