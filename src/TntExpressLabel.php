@@ -9,7 +9,11 @@ use RS\TntExpress\Elements\Address;
 use RS\TntExpress\Elements\CollectionDateTime;
 use RS\TntExpress\Elements\ConsignmentIdentity;
 use RS\TntExpress\Elements\OptionalElements;
+use RS\TntExpress\Elements\PieceLine;
+use RS\TntExpress\Elements\PieceMeasurements;
+use RS\TntExpress\Elements\Pieces;
 use RS\TntExpress\Elements\Product;
+use RS\TntExpress\Elements\TotalNumberOfPieces;
 
 class TntExpressLabel extends TntExpress{
 
@@ -19,6 +23,7 @@ class TntExpressLabel extends TntExpress{
     public $collectionDateTime; 
     public $product; 
     public $optionalElements;
+    public $totalNumberOfPieces;
     
     public $url = 'https://express.tnt.com/expresslabel/documentation/getlabel'; 
 
@@ -113,5 +118,30 @@ class TntExpressLabel extends TntExpress{
                                ->setCustomControlled($customControlled)
                                ->setTermsOfPayment($termsOfPayment); 
         return $this->optionalElements;
+    }
+
+    public function setTotalPieces(int $totalNumberOfPieces)
+    {
+        $this->totalNumberOfPieces = new TotalNumberOfPieces(); 
+        $this->totalNumberOfPieces->setTotalNumberOfPieces($totalNumberOfPieces);
+    }
+
+    /**
+     * @param string $reference : Reference on label
+     * @param string $description : Description on label
+     * @param PieceMeasurements $mesurement : (length, width , height, weight)
+     * @param Pieces[] $pieces
+     */
+    public function setPieceLine(string $reference, string $description, PieceMeasurements $mesurement, array $pieces)
+    {
+        if ($this->pieceLine->getTotalNumberOfPieces() > 0) {
+            $this->pieceLine = new PieceLine();
+            $this->pieceLine->setIdentifier($reference)
+                            ->setGoodsDescription($description);
+            foreach ($pieces as $piece) {           
+                $this->pieceLine->setPieces($piece);
+            }
+            $this->createElement("pieceLine", $this->pieceLine);
+        }
     }
 }
