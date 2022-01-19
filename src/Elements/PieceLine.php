@@ -103,7 +103,7 @@ class PieceLine extends AbstractXml{
     public function setPieceMeasurements(PieceMeasurements $pieceMeasurements)
     {
         $this->pieceMeasurements = $pieceMeasurements;
-        $this->xml->writeElementCData('pieceMeasurements', $this->pieceMeasurements->getAsXml(), false);
+        $this->createElement("pieceMeasurements", $this->pieceMeasurements->getAsXml());
         return $this;
     }
 
@@ -127,7 +127,7 @@ class PieceLine extends AbstractXml{
     public function setPieces(Pieces $pieces)
     {
         $this->pieces[] = $pieces;
-        $this->xml->writeElementCData('pieces', $this->pieces);
+        $this->createElement("pieces", $pieces);
         return $this;
     }
 }

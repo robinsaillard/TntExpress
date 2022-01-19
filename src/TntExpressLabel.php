@@ -118,6 +118,7 @@ class TntExpressLabel extends TntExpress{
                                ->setCashType($cashType)
                                ->setCustomControlled($customControlled)
                                ->setTermsOfPayment($termsOfPayment); 
+        $this->writeObjectRaw($this->optionalElements);
         return $this->optionalElements;
     }
 
@@ -125,6 +126,8 @@ class TntExpressLabel extends TntExpress{
     {
         $this->totalNumberOfPieces = new TotalNumberOfPieces(); 
         $this->totalNumberOfPieces->setTotalNumberOfPieces($totalNumberOfPieces);
+        $this->writeObjectRaw($this->totalNumberOfPieces);
+        return $this->totalNumberOfPieces;
     }
 
     /**
@@ -144,6 +147,7 @@ class TntExpressLabel extends TntExpress{
                 $this->pieceLine->setPieces($piece);
             }
             $this->createElement("pieceLine", $this->pieceLine);
+            return $this->pieceLine;
         }
     }
 }

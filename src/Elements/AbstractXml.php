@@ -28,6 +28,12 @@ abstract class AbstractXml
     {   
        // return trim($this->xml->flush(false));
         return $this->xml->flush(false);
-
-    }    
+    }  
+    
+    public function createElement($element, $object)
+    {
+        $this->xml->startElement($element); 
+        $this->xml->writeRaw($object->getAsXml()); 
+        $this->xml->endElement();
+    }  
 }

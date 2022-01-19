@@ -20,16 +20,4 @@ class XmlWriterOverride extends XMLWriter
                 
         return $state;
     }
-
-    // public function writeArrayElements(string $parent, array $array){
-    //     $state = "";
-    //     $this->startElement($parent);
-    //         foreach ($array as $name => $content) {
-    //             $this->startElement($name);
-    //             $state .= $this->writeCdata($content) . "\n";
-    //             $this->endElement();
-    //         }
-    //     $this->endElement();
-    //     return $state;
-    // }
 }

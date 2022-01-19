@@ -80,6 +80,12 @@ abstract class TntExpress {
         $this->xml->writeRaw($object->getAsXml()); 
         $this->xml->endElement();
     }
+    
+    public function writeObjectRaw($object)
+    {
+        $this->xml->writeRaw($object->getAsXml()); 
+    }
+
 
     public function flush()
     {
