@@ -18,18 +18,17 @@ abstract class AbstractXml
         $this->xml->setIndent(true);
     }
     
-    public function __destruct()
-    {
-    
-        $this->xml->flush();
-    }
+    // public function __destruct()
+    // {
+    //     $this->xml->flush();
+    // }
     
     public function getAsXml()
     {   
        // return trim($this->xml->flush(false));
         return $this->xml->flush(false);
     }  
-    
+
     public function createElement($element, $object)
     {
         $this->xml->startElement($element); 
