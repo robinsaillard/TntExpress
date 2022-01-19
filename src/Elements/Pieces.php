@@ -28,6 +28,12 @@ class Pieces extends AbstractXml {
         return $this->sequenceNumbers;
     }
 
+    public function __construct($sequenceNumbers, $pieceReference) {
+        parent::__construct();
+        $this->setSequenceNumbers($sequenceNumbers);
+        $this->setPieceReference($pieceReference);
+    }
+
     /**
      * Set element is required
      *
