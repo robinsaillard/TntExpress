@@ -24,6 +24,7 @@ class TntExpressLabel extends TntExpress{
     public $product; 
     public $optionalElements;
     public $totalNumberOfPieces;
+    public $pieceLine; 
     
     public $url = 'https://express.tnt.com/expresslabel/documentation/getlabel'; 
 
@@ -134,7 +135,7 @@ class TntExpressLabel extends TntExpress{
      */
     public function setPieceLine(string $reference, string $description, PieceMeasurements $mesurement, array $pieces)
     {
-        if ($this->pieceLine->getTotalNumberOfPieces() > 0) {
+        if ($this->totalNumberOfPieces->getTotalNumberOfPieces() > 0) {
             $this->pieceLine = new PieceLine();
             $this->pieceLine->setIdentifier($reference)
                             ->setGoodsDescription($description)
