@@ -72,12 +72,15 @@ abstract class TntExpress {
     public function startDocument()
     {
         $this->xml->startDocument("1.0","UTF-8"); 
-        $this->xml->startElement("consignment")->addAttribute("key","CON1"); 
+        $this->xml->startElement("labelRequest");
+        $this->xml->startElement("consignment");
+        $this->xml->addAttribute("key","CON1"); 
     }
 
     public function endDocument()
     {
         $this->xml->endElement("consignment");
+        $this->xml->endElement("labelRequest");
     }
 
     public function createElement($element, $object)
