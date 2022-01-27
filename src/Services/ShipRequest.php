@@ -44,7 +44,7 @@ class ShipRequest
             ->addChild([
                 "CONSIGNMENTBATCH" => [
                     "SENDER" => [
-                        $this->getAddress($xml, $sender, $account),
+                        $this->getAddress($sender, $account),
                         "COLLECTION" => [
                             "COLLECTIONADDRESS" => $this->getAddress($sender, $account),
                             "SHIPDATE" => [
