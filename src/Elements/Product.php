@@ -33,7 +33,7 @@ class Product extends AbstractXml {
      * @var string
      * Element is optional
      */
-    public $option;   
+    public $option;
     
 
     /**
