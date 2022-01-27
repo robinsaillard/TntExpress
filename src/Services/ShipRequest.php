@@ -46,7 +46,7 @@ class ShipRequest
                     "SENDER" => [
                         $this->getAddress($xml, $sender, $account),
                         "COLLECTION" => [
-                            "COLLECTIONADDRESS" => $this->getAddress($xml, $sender, $account),
+                            "COLLECTIONADDRESS" => $this->getAddress($sender, $account),
                             "SHIPDATE" => [
                                 "PREFCOLLECTTIME" => [
                                     "FROM" => "09:00", 
@@ -63,8 +63,8 @@ class ShipRequest
                     "CONSIGNMENT" => [
                         "CONREF" => $reference, 
                         "DETAILS" => [
-                            "RECEIVER" => $this->getAddress($xml, $receiver, $account),
-                            "DELIVERY" => $this->getAddress($xml, $sender, $account),
+                            "RECEIVER" => $this->getAddress($receiver, $account),
+                            "DELIVERY" => $this->getAddress($sender, $account),
                             "CUSTOMERREF" => $reference, 
                             "CONTYPE" => "",
                             "PAYMENTIND" => "",
@@ -128,24 +128,30 @@ class ShipRequest
         return $xml; 
     }
 
-    public function getAddress($xml, $address, $account = false)
+    public function getAddress($address, $account = false)
     {
-        $xml->cdata("COMPANY", $address->name)
-            ->cdata("STREETADDRESS1", $address->addressLine1)
-            ->cdata("STREETADDRESS2", $address->addressLine2)
-            ->cdata("STREETADDRESS3", $address->addressLine3)
-            ->cdata("CITY", $address->town)
-            ->cdata("PROVINCE", $address->province)
-            ->cdata("POSTCODE", $address->postcode)
-            ->cdata("COUNTRY", $address->country)
-            ->cdata("ACCOUNT", $address->town)
-            ->cdata("VAT"); 
+        $res = [
+            "COMPANY" => $address->name,
+            "STREETADDRESS1" => $address->name,
+            "STREETADDRESS2" => $address->name,
+            "STREETADDRESS3" => $address->name,
+            "CITY" => $address->name,
+            "PROVINCE" => $address->name,
+            "POSTCODE" => $address->name,
+            "COUNTRY" => $address->name,
+            "ACCOUNT" => $address->name,
+            "VAT" => $address->name,
+        ];
         if ($account) {
-            $xml->cdata("CONTACTNAME", $account)
-                ->cdata("CONTACTDIALCODE",$account)
-                ->cdata("CONTACTTELEPHONE", $account)
-                ->cdata("CONTACTEMAIL", $account); 
-        } 
+            $merge = [
+                "CONTACTNAME" => $account,
+                "CONTACTDIALCODE" => $account,
+                "CONTACTTELEPHONE" => $account,
+                "CONTACTEMAIL" => $account,
+            ];
+            $res = array_merge($res, $merge);
+        }
+        return $res;
     }
 
     public function setPackage()
