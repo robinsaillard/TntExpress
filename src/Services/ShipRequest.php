@@ -36,10 +36,10 @@ class ShipRequest
         $xml = new FluidXml("ESHIPPER");
         $xml->addChild([
             "LOGIN" => [
-                "COMPANY" => $this->label->getUserId(),
-                "PASSWORD"=> $this->label->getPassword(),
-                "APPID" => "EC",
-                "APPVERSION"=> 2.2
+                "COMPANY" => $this->cD($this->label->getUserId()),
+                "PASSWORD"=>  $this->cD($this->label->getPassword()),
+                "APPID" => $this->cD("EC"),
+                "APPVERSION"=> $this->cD(2.2)
             ]])
             ->addChild([
                 "CONSIGNMENTBATCH" => [
@@ -49,49 +49,49 @@ class ShipRequest
                             "COLLECTIONADDRESS" => $this->getAddress($sender, $account),
                             "SHIPDATE" => [
                                 "PREFCOLLECTTIME" => [
-                                    "FROM" => "09:00", 
-                                    "TO" => "10:00"
+                                    "FROM" => $this->cD("09:00"), 
+                                    "TO" => $this->cD("10:00")
                                 ], 
                                 "ALTCOLLECTTIME" => [
-                                    "FROM" => "11:00", 
-                                    "TO" => "12:00"
+                                    "FROM" => $this->cD("11:00"), 
+                                    "TO" => $this->cD("12:00")
                                 ], 
                             ], 
-                            "COLLINSTRUCTIONS" => $instruction,                       
+                            "COLLINSTRUCTIONS" => $this->cD($instruction),                       
                         ]    
                     ], 
                     "CONSIGNMENT" => [
-                        "CONREF" => $reference, 
+                        "CONREF" => $this->cD($reference), 
                         "DETAILS" => [
                             "RECEIVER" => $this->getAddress($receiver, $account),
                             "DELIVERY" => $this->getAddress($sender, $account),
-                            "CUSTOMERREF" => $reference, 
-                            "CONTYPE" => "",
-                            "PAYMENTIND" => "",
-                            "ITEMS" => "",
-                            "TOTALWEIGHT" => "",
-                            "TOTALVOLUME" => "",
-                            "CURRENCY" => "",
-                            "GOODSVALUE" => "",
-                            "INSURANCEVALUE" => "",
-                            "INSURANCECURRENCY" => "",
-                            "SERVICE" => "",
-                            "OPTION" => "",
-                            "DESCRIPTION" => "",
-                            "DELIVERYINST" => "",
+                            "CUSTOMERREF" => $this->cD($reference), 
+                            "CONTYPE" => $this->cD(""),
+                            "PAYMENTIND" => $this->cD(""),
+                            "ITEMS" => $this->cD(""),
+                            "TOTALWEIGHT" => $this->cD(""),
+                            "TOTALVOLUME" => $this->cD(""),
+                            "CURRENCY" => $this->cD(""),
+                            "GOODSVALUE" => $this->cD(""),
+                            "INSURANCEVALUE" => $this->cD(""),
+                            "INSURANCECURRENCY" => $this->cD(""),
+                            "SERVICE" => $this->cD(""),
+                            "OPTION" => $this->cD(""),
+                            "DESCRIPTION" => $this->cD(""),
+                            "DELIVERYINST" => $this->cD(""),
                             "PACKAGE" => [
-                                "ITEMS" => "",
-                                "DESCRIPTION" => "",
-                                "LENGTH" => "",
-                                "HEIGHT" => "",
-                                "WIDTH" => "",
-                                "WEIGHT" => "",
+                                "ITEMS" => $this->cD(""),
+                                "DESCRIPTION" => $this->cD(""),
+                                "LENGTH" => $this->cD(""),
+                                "HEIGHT" => $this->cD(""),
+                                "WIDTH" => $this->cD(""),
+                                "WEIGHT" => $this->cD(""),
                                 "ARTICLE" => [
-                                    "ITEMS" => "",
-                                    "DESCRIPTION" => "",
-                                    "WEIGHT" => "",
-                                    "ITEMS" => "",
-                                    "ITEMS" => "",
+                                    "ITEMS" => $this->cD(""),
+                                    "DESCRIPTION" => $this->cD(""),
+                                    "WEIGHT" => $this->cD(""),
+                                    "ITEMS" => $this->cD(""),
+                                    "ITEMS" => $this->cD(""),
                                 ]
                             ]
                         ]
@@ -100,23 +100,23 @@ class ShipRequest
                 ], 
                 "ACTIVITY" => [
                     "CREATE" => [
-                        "CONREF" => ""
+                        "CONREF" => $this->cD("")
                     ], 
                     "SHIP" => [
-                        "CONREF" => ""
+                        "CONREF" => $this->cD("")
                     ], 
                     "PRINT" => [
                         "CONNOTE" => [
-                            "CONREF" => ""
+                            "CONREF" => $this->cD("")
                         ],
                         "LABEL" => [
-                            "CONREF" => ""
+                            "CONREF" => $this->cD("")
                         ],
                         "MANIFEST" => [
-                            "CONREF" => ""
+                            "CONREF" => $this->cD("")
                         ],
                         "INVOICE" => [
-                            "CONREF" => ""
+                            "CONREF" => $this->cD("")
                         ],
                         "EMAILTO" => $emailReceiver,
                         "EMAILFROM" => $emailSender,
@@ -132,18 +132,18 @@ class ShipRequest
     {
         $res = [
             "COMPANY" => $address->name,
-            "STREETADDRESS1" => $address->name,
-            "STREETADDRESS2" => $address->name,
-            "STREETADDRESS3" => $address->name,
-            "CITY" => $address->name,
-            "PROVINCE" => $address->name,
-            "POSTCODE" => $address->name,
-            "COUNTRY" => $address->name,
-            "ACCOUNT" => $address->name,
-            "VAT" => $address->name,
+            "STREETADDRESS1" => $address->addressLine1,
+            "STREETADDRESS2" => $address->addressLine2,
+            "STREETADDRESS3" => $address->addressLine3,
+            "CITY" => $address->town,
+            "PROVINCE" => $address->province,
+            "POSTCODE" => $address->postcode,
+            "COUNTRY" => $address->country,
+            "VAT" => $address->exactMatch,
         ];
         if ($account) {
             $merge = [
+                "ACCOUNT" => $account,
                 "CONTACTNAME" => $account,
                 "CONTACTDIALCODE" => $account,
                 "CONTACTTELEPHONE" => $account,
@@ -159,4 +159,9 @@ class ShipRequest
         return ; 
     }
 
+
+    public function cD($value)
+    {
+        return "<![CDATA[" . $value . "]]>";
+    }
 }
