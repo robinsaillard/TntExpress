@@ -31,7 +31,7 @@ class ShipRequest
         $this->account = $label->account; 
         $this->product = $label->product; 
         $this->totalItems = $label->totalNumberOfPieces; 
-        $this->optional = $label->optionalElement; 
+        $this->optional = $label->optionalElements; 
     }
 
     public function getShippingRequest()
@@ -105,7 +105,7 @@ class ShipRequest
         return $xml->xml(); 
     }
 
-    public function getAddress($address, $account = false)
+    public function getAddress($address, $account = null)
     {
         $res = [
             "COMPANY" => $this->cD($address->name),
@@ -118,13 +118,13 @@ class ShipRequest
             "COUNTRY" => $this->cD($address->country),
             "VAT" => $this->cD($address->exactMatch),
         ];
-        if ($account) {
+        if (!is_null($account)) {
             $merge = [
-                "ACCOUNT" => $this->cD($account),
-                "CONTACTNAME" => $this->cD($account),
-                "CONTACTDIALCODE" => $this->cD($account),
-                "CONTACTTELEPHONE" => $this->cD($account),
-                "CONTACTEMAIL" => $this->cD($account),
+                "ACCOUNT" => $this->cD($account->accountNumber),
+                "CONTACTNAME" => $this->cD($account->accountNumber),
+                "CONTACTDIALCODE" => $this->cD($account->accountNumber),
+                "CONTACTTELEPHONE" => $this->cD($account->accountNumber),
+                "CONTACTEMAIL" => $this->cD($account->accountNumber),
             ];
             $res = array_merge($res, $merge);
         }
