@@ -38,9 +38,6 @@ class ShipRequest
     {
         $date = new DateTime(); 
         $formatedDate = $date->format("d/m/Y");
-        $reference = "";
-        $account = "";
-        $instruction = "";
         $emailReceiver = ""; 
         $emailSender = ""; 
         $xml = new FluidXml("ESHIPPER");
@@ -54,9 +51,9 @@ class ShipRequest
             ->addChild([
                 "CONSIGNMENTBATCH" => [
                     "SENDER" => [
-                        $this->getAddress($this->sender, $account),
+                        $this->getAddress($this->sender, $this->account),
                         "COLLECTION" => [
-                            "COLLECTIONADDRESS" => $this->getAddress($this->sender, $account),
+                            "COLLECTIONADDRESS" => $this->getAddress($this->sender, $this->account),
                             "SHIPDATE" => $formatedDate,
                             "PREFCOLLECTTIME" => [
                                 "FROM" => $this->cD("09:00"), 
@@ -66,7 +63,7 @@ class ShipRequest
                                 "FROM" => $this->cD("11:00"), 
                                 "TO" => $this->cD("12:00")
                             ], 
-                            "COLLINSTRUCTIONS" => $this->cD($instruction),                       
+                            "COLLINSTRUCTIONS" => $this->cD($this->optional->specialInstructions),                       
                         ]    
                     ], 
                     "CONSIGNMENT" => [
@@ -150,21 +147,23 @@ class ShipRequest
             "OPTION" => $this->cD($this->product->option),
             "DESCRIPTION",
             "DELIVERYINST" => $this->cD($this->optional->specialInstructions),
-            // "PACKAGE" => [
-            //     "ITEMS" => $this->cD(""),
-            //     "DESCRIPTION" => $this->cD(""),
-            //     "LENGTH" => $this->cD(""),
-            //     "HEIGHT" => $this->cD(""),
-            //     "WIDTH" => $this->cD(""),
-            //     "WEIGHT" => $this->cD(""),
-            //     "ARTICLE" => [
-            //         "ITEMS" => $this->cD(""),
-            //         "DESCRIPTION" => $this->cD(""),
-            //         "WEIGHT" => $this->cD(""),
-            //         "INVOICEVALUE" => $this->cD(""),
-            //         "INVOICEDESC" => $this->cD(""),
-            //         "HTS" => $this->cD(""),
-            //         "COUNTRY" => $this->cD(""),
+            "PACKAGE" => [
+                "ITEMS" => $this->cD($this->totalItems->totalNumberOfPieces),
+                "DESCRIPTION" => $this->cD(""),
+                "LENGTH",
+                "HEIGHT" ,
+                "WIDTH" ,
+                "WEIGHT" => $this->cD(3),
+                // "ARTICLE" => [
+                //     "ITEMS" => $this->cD(""),
+                //     "DESCRIPTION" => $this->cD(""),
+                //     "WEIGHT" => $this->cD(""),
+                //     "INVOICEVALUE" => $this->cD(""),
+                //     "INVOICEDESC" => $this->cD(""),
+                //     "HTS" => $this->cD(""),
+                //     "COUNTRY" => $this->cD(""),
+                // ]
+            ]
         ];
 
     }
