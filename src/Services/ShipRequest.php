@@ -125,7 +125,7 @@ class ShipRequest
                 ],
             ])
         ;
-        return $xml; 
+        return $xml->xml(); 
     }
 
     public function getAddress($address, $account = false)
