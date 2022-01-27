@@ -25,6 +25,7 @@ class TntExpressLabel extends TntExpress{
     public $optionalElements;
     public $totalNumberOfPieces;
     public $pieceLine; 
+
     
     public $url = 'https://express.tnt.com/expresslabel/documentation/getlabel'; 
 

@@ -44,4 +44,6 @@ class CollectionDateTime extends AbstractXml {
         }
         return $this;
     }
+
+    
 }
