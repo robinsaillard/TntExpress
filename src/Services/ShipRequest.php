@@ -48,7 +48,7 @@ class ShipRequest
                 "COMPANY" => $this->cD($this->label->getUserId()),
                 "PASSWORD"=>  $this->cD($this->label->getPassword()),
                 "APPID" => $this->cD("EC"),
-                "APPVERSION"=> $this->cD(2.2)
+                "APPVERSION"=> $this->cD(3.1)
             ]])
             ->addChild([
                 "CONSIGNMENTBATCH" => [
@@ -83,7 +83,7 @@ class ShipRequest
     public function getAddress($address, $account = null)
     {
         $res = [
-            "COMPANY" => $this->cD($address->name),
+            "COMPANYNAME" => $this->cD($address->name),
             "STREETADDRESS1" => $this->cD($address->addressLine1),
             "STREETADDRESS2" => $this->cD($address->addressLine2),
             "STREETADDRESS3" => $this->cD($address->addressLine3),
