@@ -114,7 +114,7 @@ class TntExpressLabel extends TntExpress{
                                ->setCashType($cashType)
                                ->setCustomControlled($customControlled)
                                ->setTermsOfPayment($termsOfPayment); 
-        return $this->optionalElements;
+        return $this;
     }
 
     public function setTotalPieces(int $totalNumberOfPieces)
