@@ -74,7 +74,7 @@ class ShipRequest
                     ]
 
                 ], 
-                "ACTIVITY" => $this->getActivity(["CREATE"], $emailReceiver, $emailSender)
+                "ACTIVITY" => $this->getActivity(["CREATE", "SHIP", "PRINT"], false, $emailReceiver, $emailSender)
             ])
         ;
         return $xml->xml(); 
@@ -151,7 +151,7 @@ class ShipRequest
         ] ;
     }
 
-    public function getActivity($option, $emailReceiver = null, $emailSender = null)
+    public function getActivity($option, $groupeCode = false, $emailReceiver = null, $emailSender = null)
     {
         $res = []; 
         if (in_array("CREATE", $option)) {
@@ -182,7 +182,10 @@ class ShipRequest
                 "EMAILFROM" => $emailSender,
             ];
         }
-        array_push($res, "SHOW_GROUPCODE");
+        if ($groupeCode) {
+            array_push($res, "SHOW_GROUPCODE");
+        }
+        
         return $res;
     }
 

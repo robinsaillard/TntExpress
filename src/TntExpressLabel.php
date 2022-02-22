@@ -148,10 +148,11 @@ class TntExpressLabel extends TntExpress{
         }
     }
 
-    public function setPackage(int $itemNumber, int $poids, float $longueur, float $largeur, float $hauteur)
+    public function setPackage(int $itemNumber, int $poids, float $longueur, float $largeur, float $hauteur, string $description)
     {
         $this->package = new Package();
         $this->package->setItemNumber($itemNumber)
+                      ->setDescription($description)
                       ->setWeight($poids)
                       ->setWidth($longueur)
                       ->setLenght($largeur)
