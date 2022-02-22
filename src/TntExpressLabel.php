@@ -96,11 +96,15 @@ class TntExpressLabel extends TntExpress{
     }
 
 
-    public function setAccount(string $accountNumber, string $accountCountry)
+    public function setAccount(string $accountNumber, string $accountCountry, string $contactName, string $dialCode, string $mail, string $telephone)
     {
         $this->account = new Account();
         $this->account->setAccountNumber($accountNumber)
-                      ->setAccountCountry($accountCountry);
+                      ->setAccountCountry($accountCountry)
+                      ->setContactName($contactName)
+                      ->setDialCode($dialCode)
+                      ->setMail($mail)
+                      ->setTelephone($telephone);
         return $this;
     }
 

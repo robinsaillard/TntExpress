@@ -96,10 +96,10 @@ class ShipRequest
         if (!is_null($account)) {
             $merge = [
                 "ACCOUNT" => $this->cD($account->accountNumber),
-                "CONTACTNAME" => $this->cD($account->accountNumber),
-                "CONTACTDIALCODE" => $this->cD($account->accountNumber),
-                "CONTACTTELEPHONE" => $this->cD($account->accountNumber),
-                "CONTACTEMAIL" => $this->cD($account->accountNumber),
+                "CONTACTNAME" => $this->cD($account->contactName),
+                "CONTACTDIALCODE" => $this->cD($account->dialCode),
+                "CONTACTTELEPHONE" => $this->cD($account->telephone),
+                "CONTACTEMAIL" => $this->cD($account->mail),
             ];
             $res = array_merge($res, $merge);
         }
