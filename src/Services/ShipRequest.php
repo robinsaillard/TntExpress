@@ -127,7 +127,7 @@ class ShipRequest
             "DELIVERYINST" => $this->cD($this->optional->specialInstructions),
             "PACKAGE" => $this->setPackage($this->package)
         ];
-
+        return $res;
     }
 
     public function setPackage($package)
@@ -159,13 +159,13 @@ class ShipRequest
                 "CONREF" => $this->cD($this->reference)
             ]; 
         }
-        if (in_array("CREATE", $option)) {
+        if (in_array("SHIP", $option)) {
             $res["SHIP"] = [
                 "CONREF" => $this->cD($this->reference)
             ];
         }
         if (in_array("PRINT", $option)) {
-            $res["SHIP"] =  [
+            $res["PRINT"] =  [
                 "CONNOTE" => [
                     "CONREF" => $this->cD($this->reference)
                 ],
