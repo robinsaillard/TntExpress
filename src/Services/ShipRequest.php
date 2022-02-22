@@ -19,6 +19,7 @@ class ShipRequest
     public $product; 
     public $totalItems; 
     public $optional; 
+    public $package; 
 
     protected $url = "https://express.tnt.com/expressconnect/shipping/ship"; 
 
@@ -32,6 +33,7 @@ class ShipRequest
         $this->product = $label->product; 
         $this->totalItems = $label->totalNumberOfPieces; 
         $this->optional = $label->optionalElements; 
+        $this->package = $label->package; 
     }
 
     public function getShippingRequest()
@@ -72,31 +74,7 @@ class ShipRequest
                     ]
 
                 ], 
-                "ACTIVITY" => [
-                    "CREATE" => [
-                        "CONREF" => $this->cD($this->reference)
-                    ], 
-                    "SHIP" => [
-                        "CONREF" => $this->cD($this->reference)
-                    ], 
-                    "PRINT" => [
-                        "CONNOTE" => [
-                            "CONREF" => $this->cD($this->reference)
-                        ],
-                        "LABEL" => [
-                            "CONREF" => $this->cD($this->reference)
-                        ],
-                        "MANIFEST" => [
-                            "CONREF" => $this->cD($this->reference)
-                        ],
-                        "INVOICE" => [
-                            "CONREF" => $this->cD($this->reference)
-                        ],
-                        "EMAILTO" => $emailReceiver,
-                        "EMAILFROM" => $emailSender,
-                    ],
-                    "SHOW_GROUPCODE",
-                ],
+                "ACTIVITY" => $this->getActivity(["CREATE"], $emailReceiver, $emailSender)
             ])
         ;
         return $xml->xml(); 
@@ -147,32 +125,66 @@ class ShipRequest
             "OPTION" => $this->cD($this->product->option),
             "DESCRIPTION",
             "DELIVERYINST" => $this->cD($this->optional->specialInstructions),
-            "PACKAGE" => [
-                "ITEMS" => $this->cD($this->totalItems->totalNumberOfPieces),
-                "DESCRIPTION" => $this->cD(""),
-                "LENGTH",
-                "HEIGHT" ,
-                "WIDTH" ,
-                "WEIGHT" => $this->cD(3),
-                // "ARTICLE" => [
-                //     "ITEMS" => $this->cD(""),
-                //     "DESCRIPTION" => $this->cD(""),
-                //     "WEIGHT" => $this->cD(""),
-                //     "INVOICEVALUE" => $this->cD(""),
-                //     "INVOICEDESC" => $this->cD(""),
-                //     "HTS" => $this->cD(""),
-                //     "COUNTRY" => $this->cD(""),
-                // ]
-            ]
+            "PACKAGE" => $this->setPackage($this->package)
         ];
 
     }
 
-    public function setPackage()
+    public function setPackage($package)
     {
-        return ; 
+        return [
+            "ITEMS" => $this->cD($package->itemNumber),
+            "DESCRIPTION" => $this->cD($package->description),
+            "LENGTH" => $this->cD($package->lenght),
+            "HEIGHT" => $this->cD($package->height),
+            "WIDTH" => $this->cD($package->width),
+            "WEIGHT"  => $this->cD($package->weight)
+            // "ARTICLE" => [
+            //     "ITEMS" => $this->cD(""),
+            //     "DESCRIPTION" => $this->cD(""),
+            //     "WEIGHT" => $this->cD(""),
+            //     "INVOICEVALUE" => $this->cD(""),
+            //     "INVOICEDESC" => $this->cD(""),
+            //     "HTS" => $this->cD(""),
+            //     "COUNTRY" => $this->cD(""),
+            // ]
+        ] ;
     }
 
+    public function getActivity($option, $emailReceiver = null, $emailSender = null)
+    {
+        $res = []; 
+        if (in_array("CREATE", $option)) {
+            $res["CREATE"] = [
+                "CONREF" => $this->cD($this->reference)
+            ]; 
+        }
+        if (in_array("CREATE", $option)) {
+            $res["SHIP"] = [
+                "CONREF" => $this->cD($this->reference)
+            ];
+        }
+        if (in_array("PRINT", $option)) {
+            $res["SHIP"] =  [
+                "CONNOTE" => [
+                    "CONREF" => $this->cD($this->reference)
+                ],
+                "LABEL" => [
+                    "CONREF" => $this->cD($this->reference)
+                ],
+                "MANIFEST" => [
+                    "CONREF" => $this->cD($this->reference)
+                ],
+                "INVOICE" => [
+                    "CONREF" => $this->cD($this->reference)
+                ],
+                "EMAILTO" => $emailReceiver,
+                "EMAILFROM" => $emailSender,
+            ];
+        }
+        array_push($res, "SHOW_GROUPCODE");
+        return $res;
+    }
 
     public function cD($value)
     {

@@ -9,6 +9,7 @@ use RS\TntExpress\Elements\Address;
 use RS\TntExpress\Elements\CollectionDateTime;
 use RS\TntExpress\Elements\ConsignmentIdentity;
 use RS\TntExpress\Elements\OptionalElements;
+use RS\TntExpress\Elements\Package;
 use RS\TntExpress\Elements\PieceLine;
 use RS\TntExpress\Elements\PieceMeasurements;
 use RS\TntExpress\Elements\Pieces;
@@ -25,7 +26,7 @@ class TntExpressLabel extends TntExpress{
     public $optionalElements;
     public $totalNumberOfPieces;
     public $pieceLine; 
-
+    public $package; 
     
     public $url = 'https://express.tnt.com/expresslabel/documentation/getlabel'; 
 
@@ -49,8 +50,7 @@ class TntExpressLabel extends TntExpress{
                      ->setProvince($province)
                      ->setPostcode($postcode)
                      ->setCountry($country);
-        $this->createElement("sender", $this->sender);
-        return $this->sender; 
+        return $this; 
     }
 
     public function setDelivery(string $name, string $addressLine1, string $addressLine2 = null, string $addressLine3 = null, 
@@ -66,8 +66,7 @@ class TntExpressLabel extends TntExpress{
                        ->setProvince($province)
                        ->setPostcode($postcode)
                        ->setCountry($country);
-        $this->createElement("delivery", $this->delivery);
-        return $this->delivery; 
+        return $this; 
     }
 
     public function setConsignementIdentity(string $consignmentNumber, string $customerReference)
@@ -75,16 +74,14 @@ class TntExpressLabel extends TntExpress{
         $this->consignmentIdentity = new ConsignmentIdentity();
         $this->consignmentIdentity->setConsignmentNumber($consignmentNumber)
                                   ->setCustomerReference($customerReference);
-        $this->createElement("consignmentIdentity", $this->consignmentIdentity);
-        return $this->consignmentIdentity; 
+        return $this; 
     }
 
     public function setCollectionDateTime(DateTime $collectionDateTime)
     {
         $this->collectionDateTime = new CollectionDateTime();
         $this->collectionDateTime->setCollectionDateTime($collectionDateTime);
-        $this->createElement("collectionDateTime", $this->collectionDateTime);
-        return $this->collectionDateTime; 
+        return $this; 
     }
 
     public function setProduct(string $lineOfBusiness, string $groupId, string $subGroupId, string $type, string $option = null)
@@ -95,8 +92,7 @@ class TntExpressLabel extends TntExpress{
                       ->setSubGroupId($subGroupId)
                       ->setType($type)
                       ->setOption($option);
-        $this->createElement("product", $this->product);
-        return $this->product;
+        return $this;
     }
 
 
@@ -105,8 +101,7 @@ class TntExpressLabel extends TntExpress{
         $this->account = new Account();
         $this->account->setAccountNumber($accountNumber)
                       ->setAccountCountry($accountCountry);
-        $this->createElement("account", $this->account);
-        return $this->account;
+        return $this;
     }
 
     public function setOptionalElements(string $bulkShipment = null , string $specialInstructions = null , string $cashAmount = null , string $cashCurrency = null , string $cashType = null , string $customControlled= null, string $termsOfPayment = null)
@@ -119,7 +114,6 @@ class TntExpressLabel extends TntExpress{
                                ->setCashType($cashType)
                                ->setCustomControlled($customControlled)
                                ->setTermsOfPayment($termsOfPayment); 
-        $this->writeObjectRaw($this->optionalElements);
         return $this->optionalElements;
     }
 
@@ -127,8 +121,7 @@ class TntExpressLabel extends TntExpress{
     {
         $this->totalNumberOfPieces = new TotalNumberOfPieces(); 
         $this->totalNumberOfPieces->setTotalNumberOfPieces($totalNumberOfPieces);
-        $this->writeObjectRaw($this->totalNumberOfPieces);
-        return $this->totalNumberOfPieces;
+        return $this;
     }
 
     /**
@@ -147,8 +140,18 @@ class TntExpressLabel extends TntExpress{
             foreach ($pieces as $piece) {           
                 $this->pieceLine->setPieces($piece);
             }
-            $this->createElement("pieceLine", $this->pieceLine);
-            return $this->pieceLine;
+            return $this;
         }
+    }
+
+    public function setPackage(int $itemNumber, int $poids, float $longueur, float $largeur, float $hauteur)
+    {
+        $this->package = new Package();
+        $this->package->setItemNumber($itemNumber)
+                      ->setWeight($poids)
+                      ->setWidth($longueur)
+                      ->setLenght($largeur)
+                      ->setHeight($hauteur); 
+        return $this; 
     }
 }
