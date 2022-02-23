@@ -40,15 +40,15 @@ class ShipRequest
     {
         $date = new DateTime(); 
         $formatedDate = $date->format("d/m/Y");
-        $emailReceiver = ""; 
-        $emailSender = ""; 
+        $emailReceiver = "test.name@tnt.com"; 
+        $emailSender = "test.name@tnt.com"; 
         $xml = new FluidXml("ESHIPPER");
         $xml->addChild([
             "LOGIN" => [
-                "COMPANY" => $this->cD($this->label->getUserId()),
-                "PASSWORD"=>  $this->cD($this->label->getPassword()),
-                "APPID" => $this->cD("EC"),
-                "APPVERSION"=> $this->cD(3.1)
+                "COMPANY" => $this->label->getUserId(),
+                "PASSWORD"=> $this->label->getPassword(),
+                "APPID" => "EC",
+                "APPVERSION"=> "3.1"
             ]])
             ->addChild([
                 "CONSIGNMENTBATCH" => [
@@ -56,7 +56,7 @@ class ShipRequest
                         $this->getAddress($this->sender, $this->account),
                         "COLLECTION" => [
                             "COLLECTIONADDRESS" => $this->getAddress($this->sender, $this->account),
-                            "SHIPDATE" => $formatedDate,
+                            "SHIPDATE" => $this->cD($formatedDate),
                             "PREFCOLLECTTIME" => [
                                 "FROM" => $this->cD("09:00"), 
                                 "TO" => $this->cD("10:00")
@@ -69,7 +69,7 @@ class ShipRequest
                         ]    
                     ], 
                     "CONSIGNMENT" => [
-                        "CONREF" => $this->cD($this->reference), 
+                        "CONREF" => $this->reference, 
                         "DETAILS" => $this->getDetail()
                     ]
 
@@ -82,17 +82,25 @@ class ShipRequest
 
     public function getAddress($address, $account = null)
     {
-        $res = [
-            "COMPANYNAME" => $this->cD($address->name),
-            "STREETADDRESS1" => $this->cD($address->addressLine1),
-            "STREETADDRESS2" => $this->cD($address->addressLine2),
-            "STREETADDRESS3" => $this->cD($address->addressLine3),
-            "CITY" => $this->cD($address->town),
-            "PROVINCE" => $this->cD($address->province),
-            "POSTCODE" => $this->cD($address->postcode),
-            "COUNTRY" => $this->cD($address->country),
-            "VAT" => $this->cD($address->exactMatch),
-        ];
+        $res["COMPANYNAME"] = $this->cD($address->name); 
+        $res["STREETADDRESS1"] = $this->cD($address->addressLine1); 
+        if (!empty($address->addressLine2)) {
+            $res["STREETADDRESS2"] = $this->cD($address->addressLine2); 
+        }
+        if (!empty($address->addressLine3)) {
+            $res["STREETADDRESS3"] = $this->cD($address->addressLine3); 
+        }
+        $res["CITY"] = $this->cD($address->town); 
+        if (!empty($address->province)) {
+            $res["PROVINCE"] = $this->cD($address->province); 
+        }
+        $res["POSTCODE"] = $this->cD($address->postcode); 
+        $res["COUNTRY"] = $this->cD($address->country); 
+
+        if (!empty($address->exactMatch)) {
+            $res["VAT"] = $this->cD($address->exactMatch); 
+        }
+
         if (!is_null($account)) {
             $merge = [
                 "ACCOUNT" => $this->cD($account->accountNumber),
@@ -111,6 +119,7 @@ class ShipRequest
         $res = [
             "RECEIVER" => $this->getAddress($this->receiver, $this->account),
             "DELIVERY" => $this->getAddress($this->sender, $this->account),
+            "CONNUMBER",
             "CUSTOMERREF" => $this->cD($this->reference), 
             "CONTYPE" => $this->cD($this->product->type),
             "PAYMENTIND" => $this->cD($this->optional->termsOfPayment),
@@ -123,7 +132,7 @@ class ShipRequest
             "INSURANCECURRENCY",
             "SERVICE" => $this->cD("48N"),
             "OPTION" => $this->cD($this->product->option),
-            "DESCRIPTION",
+            "DESCRIPTION" => $this->cD("TEST"),
             "DELIVERYINST" => $this->cD($this->optional->specialInstructions),
             "PACKAGE" => $this->setPackage($this->package)
         ];
@@ -158,6 +167,12 @@ class ShipRequest
             $res["CREATE"] = [
                 "CONREF" => $this->cD($this->reference)
             ]; 
+        }
+        if (in_array("BOOK", $option)) {
+            $res["BOOK"] = [
+                '@ShowBookingRef' => 'Y',
+                "CONREF" => $this->cD($this->reference)
+            ];
         }
         if (in_array("SHIP", $option)) {
             $res["SHIP"] = [
