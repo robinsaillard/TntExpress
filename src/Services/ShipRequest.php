@@ -55,7 +55,7 @@ class ShipRequest
                     "SENDER" => [
                         $this->getAddress($this->sender, $this->account),
                         "COLLECTION" => [
-                            "COLLECTIONADDRESS" => $this->getAddress($this->sender, $this->account),
+                            "COLLECTIONADDRESS" => $this->getAddress($this->sender),
                             "SHIPDATE" => $this->cD($formatedDate),
                             "PREFCOLLECTTIME" => [
                                 "FROM" => $this->cD("09:00"), 
