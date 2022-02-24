@@ -3,11 +3,11 @@
 namespace RS\TntExpress\Services;
 
 use DateTime;
+use Exception;
+use DateInterval;
 use FluidXml\FluidXml;
-use RS\TntExpress\TntExpress;
 use RS\TntExpress\TntExpressLabel;
-use RS\TntExpress\Elements\Address;
-use RS\TntExpress\XmlWriterOverride;
+use RS\TntExpress\Services\LabelRequest;
 
 class ShipRequest
 {
@@ -41,6 +41,10 @@ class ShipRequest
     public function getShippingRequest()
     {
         $date = new DateTime(); 
+        $dateMax = new DateTime(date("Y-m-d 14:30:00"));  
+        if ($date > $dateMax) {
+            $date = $date->add(new DateInterval('P1D'));
+        }
         $formatedDate = $date->format("d/m/Y");
         $emailReceiver = "test.name@tnt.com"; 
         $emailSender = "test.name@tnt.com"; 
@@ -79,7 +83,18 @@ class ShipRequest
                 "ACTIVITY" => $this->getActivity($this->option, false, $emailReceiver, $emailSender)
             ])
         ;
-        return $this->sendToTNTServer($xml->__toString()); 
+        $access = $this->sendToTNTServer($xml->__toString()); 
+        $result = $this->sendToTNTServer("GET_RESULT:" . preg_replace("/[^0-9]/", "", $access));
+        $xmlResult = new \SimpleXMLElement($result);
+        if ($xmlResult->CREATE->SUCCESS === "Y") {
+            $label = new LabelRequest($this->label); 
+            $conNumber = preg_replace("/[^0-9]/", "",(string) $xmlResult->CREATE->CONNUMBER); 
+            $conRef = (string) $xmlResult->CREATE->CONREF;
+            $res = $label->createLabel($conNumber, $conRef, $date->format('Y-m-dTH:i:s'));
+            dd($res); 
+        }else {
+            throw new Exception("Erreur de génération d'étiquette.");           
+        }
     }
 
     public function getAddress($address, $account = null)
@@ -162,7 +177,7 @@ class ShipRequest
             //     "COUNTRY" => $this->cD(""),
             // ]
         ] ;
-    }
+    } 
 
     public function getActivity($option, $groupeCode = false, $emailReceiver = null, $emailSender = null)
     {
@@ -244,6 +259,6 @@ class ShipRequest
         } catch (\Throwable $th) {
             dd($th);
         }    
-    }
-    
+    }    
+
 }
