@@ -38,7 +38,8 @@ class TntExpressLabel extends TntExpress{
     }
     
     public function setSender(string $name, string $addressLine1, string $addressLine2 = null, string $addressLine3 = null, 
-                              string $town, string $exactMatch = null, string $province = null, string $postcode = null , string $country)
+                              string $town, string $exactMatch = null, string $province = null, string $postcode = null , 
+                              string $country, string $contactName, string $dialCode, string $telephone, string $mail)
     {
         $this->sender = new Address();
         $this->sender->setName($name)
@@ -49,7 +50,11 @@ class TntExpressLabel extends TntExpress{
                      ->setExactMatch($exactMatch)
                      ->setProvince($province)
                      ->setPostcode($postcode)
-                     ->setCountry($country);
+                     ->setCountry($country)
+                     ->setContactName($contactName)
+                     ->setDialCode($dialCode)
+                     ->setTelephone($telephone)
+                     ->setMail($mail);
         return $this; 
     }
 

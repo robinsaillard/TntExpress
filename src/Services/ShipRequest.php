@@ -107,11 +107,11 @@ class ShipRequest
             $res["ACCOUNT"] = $this->cD($account->accountNumber);
         }
 
-        $res["CONTACTNAME"] = $this->cD($account->contactName);
-        $res["CONTACTDIALCODE"] = $this->cD($account->dialCode);
-        $res["CONTACTTELEPHONE"] = $this->cD($account->telephone);
-        $res["CONTACTEMAIL"] = $this->cD($account->mail);
-        
+        $res["CONTACTNAME"] = $this->cD($address->contactName);
+        $res["CONTACTDIALCODE"] = $this->cD($address->dialCode);
+        $res["CONTACTTELEPHONE"] = $this->cD($address->telephone);
+        $res["CONTACTEMAIL"] = $this->cD($address->mail);
+
         return $res;
     }
 
