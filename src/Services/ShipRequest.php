@@ -79,7 +79,7 @@ class ShipRequest
                 "ACTIVITY" => $this->getActivity($this->option, false, $emailReceiver, $emailSender)
             ])
         ;
-        return $xml->xml(); 
+        return $this->sendToTNTServer($xml->__toString()); 
     }
 
     public function getAddress($address, $account = null)
@@ -215,4 +215,35 @@ class ShipRequest
         }
         return null; 
     }
+
+
+    function sendToTNTServer($Xml) {
+
+        $postdata = http_build_query(
+                           array(
+                            'xml_in' => $Xml 
+                           )
+                );
+     
+        $opts = array('http' =>
+                    array(
+                       'method'  => 'POST',
+                       'header'  => 'Content-type: application/x-www-form-urlencoded',
+                       'content' => $postdata
+                     )
+                 );
+     
+        $context  = stream_context_create($opts);
+        try {
+            $output = file_get_contents( 
+                $this->url, 
+                false, 
+                $context 
+              );
+              return $output;
+        } catch (\Throwable $th) {
+            dd($th);
+        }    
+    }
+    
 }
