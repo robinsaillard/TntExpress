@@ -20,11 +20,12 @@ class ShipRequest
     public $totalItems; 
     public $optional; 
     public $package; 
+    public $option; 
 
     protected $url = "https://express.tnt.com/expressconnect/shipping/ship"; 
 
 
-    public function __construct(TntExpressLabel $label, $url = null ) {
+    public function __construct(TntExpressLabel $label, $option, $url = null ) {
         $this->label = $label; 
         $this->reference = $label->consignmentIdentity->customerReference; 
         $this->sender = $label->sender;
@@ -34,6 +35,7 @@ class ShipRequest
         $this->totalItems = $label->totalNumberOfPieces; 
         $this->optional = $label->optionalElements; 
         $this->package = $label->package; 
+        $this->option = $option;
     }
 
     public function getShippingRequest()
@@ -74,7 +76,7 @@ class ShipRequest
                     ]
 
                 ], 
-                "ACTIVITY" => $this->getActivity(["CREATE", "SHIP", "PRINT"], false, $emailReceiver, $emailSender)
+                "ACTIVITY" => $this->getActivity($this->option, false, $emailReceiver, $emailSender)
             ])
         ;
         return $xml->xml(); 
