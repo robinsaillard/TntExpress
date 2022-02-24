@@ -104,23 +104,22 @@ class ShipRequest
         }
 
         if (!is_null($account)) {
-            $merge = [
-                "ACCOUNT" => $this->cD($account->accountNumber),
-                "CONTACTNAME" => $this->cD($account->contactName),
-                "CONTACTDIALCODE" => $this->cD($account->dialCode),
-                "CONTACTTELEPHONE" => $this->cD($account->telephone),
-                "CONTACTEMAIL" => $this->cD($account->mail),
-            ];
-            $res = array_merge($res, $merge);
+            $res["ACCOUNT"] = $this->cD($account->accountNumber);
         }
+
+        $res["CONTACTNAME"] = $this->cD($account->contactName);
+        $res["CONTACTDIALCODE"] = $this->cD($account->dialCode);
+        $res["CONTACTTELEPHONE"] = $this->cD($account->telephone);
+        $res["CONTACTEMAIL"] = $this->cD($account->mail);
+        
         return $res;
     }
 
     public function getDetail()
     {
         $res = [
-            "RECEIVER" => $this->getAddress($this->receiver, $this->account),
-            "DELIVERY" => $this->getAddress($this->sender, $this->account),
+            "RECEIVER" => $this->getAddress($this->receiver),
+            "DELIVERY" => $this->getAddress($this->sender),
             "CONNUMBER",
             "CUSTOMERREF" => $this->cD($this->reference), 
             "CONTYPE" => $this->cD($this->product->type),
