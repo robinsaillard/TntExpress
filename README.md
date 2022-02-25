@@ -27,10 +27,13 @@ $tntExpressLabel->setConsignementIdentity(string $consignmentNumber, string $cus
 
                 ->setProduct(string $lineOfBusiness, string $groupId, string $subGroupId, string $type, string $option = null)
 
-                ->setAccount(string $accountNumber, string $accountCountry, string $contactName, string $dialCode, string $mail, string $telephone)
+                ->setAccount(string $accountNumber, string $accountCountry, string $contactName, string $dialCode, 
+                             string $mail, string $telephone)
 
-                ->setOptionalElements(string $bulkShipment = null , string $specialInstructions = null , string $cashAmount = null , string $cashCurrency = null , 
-                                      string $cashType = null , string $customControlled= null, string $termsOfPayment = null)
+                ->setOptionalElements(string $bulkShipment = null , string $specialInstructions = null , string $cashAmount = null , 
+                                      string $cashCurrency = null , string $cashType = null , string $customControlled= null, 
+                                      string $termsOfPayment = null)
+                                      
                 ->setTotalPieces(int $totalNumberOfPieces)
                 
                 ->setPackage(int $itemNumber, int $poids, float $longueur, float $largeur, float $hauteur, string $description); 
