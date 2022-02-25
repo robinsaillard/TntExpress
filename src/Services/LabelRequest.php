@@ -3,12 +3,16 @@
 namespace RS\TntExpress\Services;
 
 use FluidXml\FluidXml;
+use RS\TntExpress\Locale;
 use RS\TntExpress\TntExpressLabel;
 
 class LabelRequest
 {
     protected $url = "https://express.tnt.com/expresslabel/documentation/getlabel";
     protected $info; 
+    protected $errorCode;
+    protected $errorMessage;
+    protected $socketResponse;
 
     public function __construct(TntExpressLabel $info) {
         $this->info = $info;
@@ -16,44 +20,53 @@ class LabelRequest
 
     public function createLabel($consignmentNumber, $customerReference, $date)
     {
-        $identifier = 1;  
-        $sequenceNumber = "1"; 
-        $pieceReference = "REF-PIECE"; 
-        $xml = new FluidXml("labelRequest");
-
-        $xml->addChild([
+        $identifier = 1;
+        $pieceReference = $customerReference; 
+        $xml = new FluidXml("labelRequest"); 
+        $data = [
             "consignment" => [
                 "@key" => "CON1", 
                 "consignmentIdentity" => [
-                    "consignmentNumber" => $consignmentNumber, 
-                    "customerReference" => $customerReference
+                    "consignmentNumber" => $this->cD($consignmentNumber), 
+                    "customerReference" => $this->cd($customerReference)
                 ],
-                "collectionDateTime" => $date, 
+                "collectionDateTime" => $this->cD($date . "T16:30:00"), 
                 "sender" => $this->getAddress($this->info->sender),
                 "delivery" => $this->getAddress($this->info->delivery), 
                 "product" => $this->getProduct(),
                 "account" => [
-                    "accountNumber" => $this->info->account->accountNumber, 
-                    "accountCountry" => $this->info->account->accountCountry
+                    "accountNumber" => $this->cD($this->info->account->accountNumber), 
+                    "accountCountry" => $this->cD($this->info->account->accountCountry)
                 ], 
-                "totalNumberOfPieces" => $this->info->totalItems, 
+                "totalNumberOfPieces" => $this->cD($this->info->totalNumberOfPieces->totalNumberOfPieces), 
                 "pieceLine" => [
-                    "identifier" => $identifier, 
-                    "goodsDescription" => "description",
+                    "identifier" => $this->cD($identifier), 
+                    "goodsDescription" => $this->cD("description"), 
                     "pieceMeasurements" => [
-                        "length" => $this->info->package->lenght, 
-                        "width" => $this->info->package->width, 
-                        "height" => $this->info->package->height, 
-                        "weight" => $this->info->package->weight, 
+                        "lenght" => $this->cD($this->info->package->lenght),
+                        "width" => $this->cD($this->info->package->width),
+                        "height" => $this->cD($this->info->package->height),
+                        "weight" => $this->cD($this->info->package->weight),
                     ], 
-                    "pieces" => [
-                        "sequenceNumbers" => $sequenceNumber,
-                        "pieceReference" => $pieceReference
-                    ]
                 ]
             ]
-        ]);  
-        return $this->sendToTNTServer($xml->__toString());
+        ]; 
+        for ($i=0; $i < $this->info->totalNumberOfPieces->totalNumberOfPieces; $i++) { 
+            $data["consignment"]["pieceLine"][] = [
+                "pieces" => [
+                    "sequenceNumbers" => $this->cD($i + 1), 
+                    "pieceReference" => $this->cD($pieceReference . "-" . ($i + 1))
+                ]
+            ];
+        }
+        $xml->addchild($data); 
+
+        //dd($xml->__toString());
+        $this->httpPost($xml->__toString());
+        echo $this->renderHtml($this->socketResponse);
+        // dd($this->errorMessage,$this->socketResponse); 
+        // die();
+        return $this->httpPost($xml->__toString());
     }
 
     public function getAddress($address, $account = null)
@@ -67,7 +80,7 @@ class LabelRequest
             $res["addressLine3"] = $this->cD($address->addressLine3); 
         }
         $res["town"] = $this->cD($address->town); 
-        $res["exactMatch"] = "Y"; 
+        $res["exactMatch"] = $this->cD("Y"); 
         if (!empty($address->province)) {
             $res["province"] = $this->cD($address->province); 
         }
@@ -79,12 +92,12 @@ class LabelRequest
     public function getProduct($product = null)
     {
         return [
-            "lineOfBusiness" => 2, 
-            "groupId" => 0, 
-            "subGroupId" => 0, 
-            "id" => "EX", 
-            "type" => "N", 
-            "option" => ""
+            "lineOfBusiness" => $this->cD(2), 
+            "groupId" => $this->cD(0), 
+            "subGroupId" => $this->cD(0), 
+            "id" => $this->cD("EX"), 
+            "type" => $this->cD("N"), 
+            "option" => $this->cD("")
         ];
     }
 
@@ -96,32 +109,46 @@ class LabelRequest
         return null; 
     }
 
-    function sendToTNTServer($Xml) {
+    public function httpPost($strRequest)
+    {
+        $ch=curl_init();
+        curl_setopt($ch, CURLOPT_URL, $this->url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        $userPass = "";
+        if ((trim($this->info->getUserId())!="") && (trim($this->info->getPassword())!="")) {
+            $userPass = $this->info->getUserId().":".$this->info->getPassword();
+            curl_setopt($ch, CURLOPT_USERPWD, $userPass);
+        }
+        curl_setopt($ch, CURLOPT_POST, 1) ;
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $strRequest);
+        $isSecure = strpos($this->url,"https://");
 
-        $postdata = http_build_query(
-                           array(
-                            'xml_in' => $Xml 
-                           )
-                );
-     
-        $opts = array('http' =>
-                    array(
-                       'method'  => 'POST',
-                       'header'  => 'Content-type: application/x-www-form-urlencoded',
-                       'content' => $postdata
-                     )
-                 );
-     
-        $context  = stream_context_create($opts);
-        try {
-            $output = file_get_contents( 
-                $this->url, 
-                false, 
-                $context 
-              );
-              return $output;
-        } catch (\Throwable $th) {
-            dd($th);
-        }    
-    } 
+        if ($isSecure===0) {
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+        } 
+        $result = curl_exec($ch);
+        $this->errorCode = curl_errno($ch);
+        $this->errorMessage = curl_error($ch);
+        $this->socketResponse = $result;
+        curl_close($ch); 
+    }
+
+    public function renderHtml($xml, $cssDir = null , $imgDir = null)
+    {
+        $scheme = $_SERVER['REQUEST_SCHEME'] . '://';
+        if (is_null($cssDir)) {
+            $cssDir = $scheme . $_SERVER['SERVER_NAME'] . "/bundles/tntexpress/css/";
+        }
+        if (is_null($imgDir)) {
+            $imgDir = $scheme .  $_SERVER['SERVER_NAME']."/bundles/tntexpress/images/"; 
+        }
+        $xslt = new \xsltProcessor();
+        $xslt->importStyleSheet(\DomDocument::load(Locale::loadXls("HTMLRoutingLabelRenderer")));
+        $xslt->setParameter('', 'css_dir', $cssDir);
+        $xslt->setParameter('', 'images_dir', $imgDir);
+        return $xslt->transformToXML(\DomDocument::loadXML($xml));
+    }
+
+
 }

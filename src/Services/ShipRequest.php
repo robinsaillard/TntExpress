@@ -45,6 +45,10 @@ class ShipRequest
         if ($date > $dateMax) {
             $date = $date->add(new DateInterval('P1D'));
         }
+        if ($this->isWeekend($date)) {
+            $addDay = $this->getValueWeekend($date); 
+            $date = $date->add(new DateInterval("P{$addDay}D"));
+        }
         $formatedDate = $date->format("d/m/Y");
         $emailReceiver = "test.name@tnt.com"; 
         $emailSender = "test.name@tnt.com"; 
@@ -64,12 +68,12 @@ class ShipRequest
                             "COLLECTIONADDRESS" => $this->getAddress($this->sender),
                             "SHIPDATE" => $this->cD($formatedDate),
                             "PREFCOLLECTTIME" => [
-                                "FROM" => $this->cD("09:00"), 
-                                "TO" => $this->cD("10:00")
+                                "FROM" => $this->cD("16:00"), 
+                                "TO" => $this->cD("18:00")
                             ], 
                             "ALTCOLLECTTIME" => [
-                                "FROM" => $this->cD("11:00"), 
-                                "TO" => $this->cD("12:00")
+                                "FROM" => "", 
+                                "TO" => ""
                             ], 
                             "COLLINSTRUCTIONS" => $this->cD($this->optional->specialInstructions),                       
                         ]    
@@ -86,13 +90,16 @@ class ShipRequest
         $access = $this->sendToTNTServer($xml->__toString()); 
         $result = $this->sendToTNTServer("GET_RESULT:" . preg_replace("/[^0-9]/", "", $access));
         $xmlResult = new \SimpleXMLElement($result);
-        if ($xmlResult->CREATE->SUCCESS === "Y") {
+
+        if ((string) $xmlResult->CREATE->SUCCESS === "Y") {
             $label = new LabelRequest($this->label); 
             $conNumber = preg_replace("/[^0-9]/", "",(string) $xmlResult->CREATE->CONNUMBER); 
             $conRef = (string) $xmlResult->CREATE->CONREF;
-            $res = $label->createLabel($conNumber, $conRef, $date->format('Y-m-dTH:i:s'));
-            dd($res); 
-        }else {
+            $res = $label->createLabel($conNumber, $conRef, $date->format('Y-m-d'));
+           
+            echo $res; 
+            die(); 
+         }else {
             throw new Exception("Erreur de génération d'étiquette.");           
         }
     }
@@ -261,4 +268,17 @@ class ShipRequest
         }    
     }    
 
+    function isWeekend($date) {
+        return in_array($date->format("l"), ["Saturday", "Sunday"]);
+    }
+
+    public function getValueWeekend($date)
+    {
+        if ($date->format("l") === "Saturday") {
+            return 2; 
+        }elseif ($date->format("l") === "Sunday") {
+            return 1; 
+        }
+        return 0;
+    }
 }
