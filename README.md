@@ -30,7 +30,7 @@ $tntExpressLabel->setConsignementIdentity(string $consignmentNumber, string $cus
                 ->setAccount(string $accountNumber, string $accountCountry, string $contactName, string $dialCode, 
                              string $mail, string $telephone)
 
-                ->setOptionalElements(string $bulkShipment = null , string $specialInstructions = null , string $cashAmount = null , 
+                ->setOptionalElements(string $bulkShipment = null , string $specialInstructions = null , string $cashAmount = null, 
                                       string $cashCurrency = null , string $cashType = null , string $customControlled= null, 
                                       string $termsOfPayment = null)
                                       
