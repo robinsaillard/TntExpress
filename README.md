@@ -1,6 +1,11 @@
 # TntExpress
 Création d'étiquette tnt à l'international via le webservice (https://express.tnt.com/expresswebservices-website/app/routinglabelrequest.html)
 
+
+## Installation 
+
+`composer install robinsaillard/tnt-express`
+
 ## Add bundle symfony
 
 `RS\TntExpress\TntExpressBundle::class => ['all' => true]`
