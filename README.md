@@ -11,7 +11,7 @@ Création d'étiquette tnt à l'international via le webservice (https://express
 
 
 ## Utilisation de base
-
+```php
         $tntExpressLabel = new TntExpressLabel("IdUser","password"); 
         $tntExpressLabel->setConsignementIdentity(string $consignmentNumber, string $customerReference)
                     ->setCollectionDateTime(DateTime $collectionDateTime)
@@ -32,3 +32,4 @@ Création d'étiquette tnt à l'international via le webservice (https://express
         $html = $xml->getShippingRequest();
 
         echo $html; 
+```
