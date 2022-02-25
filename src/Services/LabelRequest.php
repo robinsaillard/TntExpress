@@ -41,7 +41,7 @@ class LabelRequest
                 "totalNumberOfPieces" => $this->cD($this->info->totalNumberOfPieces->totalNumberOfPieces), 
                 "pieceLine" => [
                     "identifier" => $this->cD($identifier), 
-                    "goodsDescription" => $this->cD("description"), 
+                    "goodsDescription" => $this->cD($pieceReference), 
                     "pieceMeasurements" => [
                         "lenght" => $this->cD($this->info->package->lenght),
                         "width" => $this->cD($this->info->package->width),
@@ -60,13 +60,8 @@ class LabelRequest
             ];
         }
         $xml->addchild($data); 
-
-        //dd($xml->__toString());
         $this->httpPost($xml->__toString());
-        echo $this->renderHtml($this->socketResponse);
-        // dd($this->errorMessage,$this->socketResponse); 
-        // die();
-        return $this->httpPost($xml->__toString());
+        return $this->renderHtml($this->socketResponse);
     }
 
     public function getAddress($address, $account = null)
@@ -149,6 +144,4 @@ class LabelRequest
         $xslt->setParameter('', 'images_dir', $imgDir);
         return $xslt->transformToXML(\DomDocument::loadXML($xml));
     }
-
-
 }

@@ -50,8 +50,8 @@ class ShipRequest
             $date = $date->add(new DateInterval("P{$addDay}D"));
         }
         $formatedDate = $date->format("d/m/Y");
-        $emailReceiver = "test.name@tnt.com"; 
-        $emailSender = "test.name@tnt.com"; 
+        $emailReceiver = $this->receiver->mail; 
+        $emailSender = $this->sender->mail; 
         $xml = new FluidXml("ESHIPPER");
         $xml->addChild([
             "LOGIN" => [
@@ -95,10 +95,8 @@ class ShipRequest
             $label = new LabelRequest($this->label); 
             $conNumber = preg_replace("/[^0-9]/", "",(string) $xmlResult->CREATE->CONNUMBER); 
             $conRef = (string) $xmlResult->CREATE->CONREF;
-            $res = $label->createLabel($conNumber, $conRef, $date->format('Y-m-d'));
-           
-            echo $res; 
-            die(); 
+            $res = $label->createLabel($conNumber, $conRef, $date->format('Y-m-d'));   
+            return $res;
          }else {
             throw new Exception("Erreur de génération d'étiquette.");           
         }
