@@ -24,8 +24,6 @@ class TntExpressInfo extends TntExpress{
     public $collectionDateTime; 
     public $product; 
     public $optionalElements;
-    public $totalNumberOfPieces;
-    public $pieceLine; 
     public $package; 
     
     public $url = 'https://express.tnt.com/expresslabel/documentation/getlabel'; 

@@ -39,7 +39,7 @@ class LabelRequest extends TntExpress
                     "accountNumber" => $this->cD($this->info->account->accountNumber), 
                     "accountCountry" => $this->cD($this->info->account->accountCountry)
                 ], 
-                "totalNumberOfPieces" => $this->cD($this->info->itemNumber), 
+                "totalNumberOfPieces" => $this->cD($this->info->package->itemNumber), 
                 "pieceLine" => [
                     "identifier" => $this->cD($identifier), 
                     "goodsDescription" => $this->cD($pieceReference), 
