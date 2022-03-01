@@ -104,4 +104,29 @@ class LabelRequest extends TntExpress
         }
         return null; 
     }
+    
+    public function httpPost($strRequest)
+    {
+        $ch=curl_init();
+        curl_setopt($ch, CURLOPT_URL, $this->url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        $userPass = "";
+        if ((trim($this->userId)!="") && (trim($this->password)!="")) {
+            $userPass = $this->userId.":".$this->password;
+            curl_setopt($ch, CURLOPT_USERPWD, $userPass);
+        }
+        curl_setopt($ch, CURLOPT_POST, 1) ;
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $strRequest);
+        $isSecure = strpos($this->url,"https://");
+
+        if ($isSecure===0) {
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+        } 
+        $result = curl_exec($ch);
+        $this->errorCode = curl_errno($ch);
+        $this->errorMessage = curl_error($ch);
+        $this->socketResponse = $result;
+        curl_close($ch); 
+    }
 }
