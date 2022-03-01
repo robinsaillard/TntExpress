@@ -57,7 +57,7 @@ class ShipRequest
             "LOGIN" => [
                 "COMPANY" => $this->label->getUserId(),
                 "PASSWORD"=> $this->label->getPassword(),
-                "APPID" => "EC",
+                "APPID" => $this->product->id,
                 "APPVERSION"=> "3.1"
             ]])
             ->addChild([
