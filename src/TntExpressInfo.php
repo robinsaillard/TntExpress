@@ -79,7 +79,7 @@ class TntExpressInfo extends TntExpress{
         return $this; 
     }
 
-    public function setConsignementIdentity(string $consignmentNumber, string $customerReference)
+    public function setConsignementIdentity(string $customerReference, string $consignmentNumber = null)
     {
         $this->consignmentIdentity = new ConsignmentIdentity();
         $this->consignmentIdentity->setConsignmentNumber($consignmentNumber)
