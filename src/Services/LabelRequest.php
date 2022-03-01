@@ -52,7 +52,7 @@ class LabelRequest extends TntExpress
                 ]
             ]
         ]; 
-        for ($i=0; $i < $this->info->itemNumber; $i++) { 
+        for ($i=0; $i < $this->info->package->itemNumber; $i++) { 
             $data["consignment"]["pieceLine"][] = [
                 "pieces" => [
                     "sequenceNumbers" => $this->cD($i + 1), 
