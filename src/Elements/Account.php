@@ -1,10 +1,7 @@
 <?php
 
 namespace RS\TntExpress\Elements;
-
-use RS\TntExpress\Elements\AbstractXml;
-
-class Account extends AbstractXml {
+class Account {
 
     /**
      * @var string
@@ -72,7 +69,6 @@ class Account extends AbstractXml {
     public function setAccountNumber(string $accountNumber)
     {
         $this->accountNumber = $accountNumber;
-        $this->xml->writeElementCData('accountNumber', $accountNumber);
         return $this;
     }
 
@@ -86,7 +82,6 @@ class Account extends AbstractXml {
     public function setAccountCountry(string $accountCountry)
     {
         $this->accountCountry = $accountCountry;
-        $this->xml->writeElementCData('accountCountry', $accountCountry);
         return $this;
     }
 

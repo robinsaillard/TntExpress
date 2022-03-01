@@ -2,13 +2,11 @@
 
 namespace RS\TntExpress\Elements;
 
-use RS\TntExpress\Elements\AbstractXml;
-
-class ConsignmentIdentity extends AbstractXml{
+class ConsignmentIdentity {
 
     /**
      * @var string
-     * Element is required
+     * Element is optional
      */
     public $consignmentNumber;
 
@@ -46,10 +44,9 @@ class ConsignmentIdentity extends AbstractXml{
      *
      * @return  self
      */ 
-    public function setConsignmentNumber(string $consignmentNumber)
+    public function setConsignmentNumber(?string $consignmentNumber)
     {
         $this->consignmentNumber = $consignmentNumber;
-        $this->xml->writeElementCData('consignmentNumber', $this->consignmentNumber);
         return $this;
     }
 
@@ -63,7 +60,6 @@ class ConsignmentIdentity extends AbstractXml{
     public function setCustomerReference(string $customerReference)
     {
         $this->customerReference = $customerReference;
-        $this->xml->writeElementCData('customerReference', $this->customerReference);
         return $this;
     }
 }

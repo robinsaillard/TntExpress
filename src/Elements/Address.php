@@ -2,9 +2,7 @@
 
 namespace RS\TntExpress\Elements;
 
-use RS\TntExpress\Elements\AbstractXml;
-
-class Address extends AbstractXml{
+class Address {
 
     /**
      * @var string
@@ -175,9 +173,7 @@ class Address extends AbstractXml{
      */ 
     public function setName(string $name)
     {
-        $this->xml->writeElementCData('name', $name);
         $this->name = $name;
-
         return $this;
     }
 
@@ -190,7 +186,6 @@ class Address extends AbstractXml{
      */ 
     public function setAddressLine1(string $addressLine1)
     {
-        $this->xml->writeElementCData('addressLine1', $addressLine1);
         $this->addressLine1 = $addressLine1;
 
         return $this;
@@ -205,7 +200,6 @@ class Address extends AbstractXml{
      */ 
     public function setAddressLine2(?string $addressLine2)
     {
-        $this->xml->writeElementCData('addressLine2', $addressLine2);
         $this->addressLine2 = $addressLine2;
 
         return $this;
@@ -220,7 +214,6 @@ class Address extends AbstractXml{
      */ 
     public function setAddressLine3(?string $addressLine3)
     {
-        $this->xml->writeElementCData('addressLine3', $addressLine3);
         $this->addressLine3 = $addressLine3;
 
         return $this;
@@ -235,7 +228,6 @@ class Address extends AbstractXml{
      */ 
     public function setTown(?string $town)
     {
-        $this->xml->writeElementCData('town', $town);
         $this->town = $town;
 
         return $this;
@@ -250,7 +242,6 @@ class Address extends AbstractXml{
      */ 
     public function setExactMatch(?string $exactMatch)
     {
-        $this->xml->writeElementCData('exactMatch', $exactMatch);
         $this->exactMatch = $exactMatch;
 
         return $this;
@@ -265,7 +256,6 @@ class Address extends AbstractXml{
      */ 
     public function setPostcode(?string $postcode)
     {
-        $this->xml->writeElementCData('postcode', $postcode);
         $this->postcode = $postcode;
 
         return $this;
@@ -280,7 +270,6 @@ class Address extends AbstractXml{
      */ 
     public function setCountry(string $country)
     {
-        $this->xml->writeElementCData('country', $country);
         $this->country = $country;
 
         return $this;
@@ -305,7 +294,6 @@ class Address extends AbstractXml{
      */ 
     public function setProvince(?string $province)
     {
-        $this->xml->writeElementCData('province', $province);
         $this->province = $province;
 
         return $this;

@@ -2,9 +2,7 @@
 
 namespace RS\TntExpress\Elements;
 
-use RS\TntExpress\Elements\AbstractXml;
-
-class OptionalElements extends AbstractXml{
+class OptionalElements {
 
     /**
      * @var string
@@ -129,7 +127,6 @@ class OptionalElements extends AbstractXml{
     public function setBulkShipment(?string $bulkShipment)
     {
         $this->bulkShipment = $bulkShipment;
-        $this->xml->writeElementCData('bulkShipment', $this->bulkShipment);
         return $this;
     }
 
@@ -143,7 +140,6 @@ class OptionalElements extends AbstractXml{
     public function setSpecialInstructions(?string $specialInstructions)
     {
         $this->specialInstructions = $specialInstructions;
-        $this->xml->writeElementCData('specialInstructions', $this->specialInstructions);
         return $this;
     }
 
@@ -157,7 +153,6 @@ class OptionalElements extends AbstractXml{
     public function setCashAmount(?string $cashAmount)
     {
         $this->cashAmount = $cashAmount;
-        $this->xml->writeElementCData('cashAmount', $this->cashAmount);
         return $this;
     }
 
@@ -171,7 +166,6 @@ class OptionalElements extends AbstractXml{
     public function setCashCurrency(?string $cashCurrency)
     {
         $this->cashCurrency = $cashCurrency;
-        $this->xml->writeElementCData('cashCurrency', $this->cashCurrency);
         return $this;
     }
 
@@ -185,7 +179,6 @@ class OptionalElements extends AbstractXml{
     public function setCashType(?string $cashType)
     {
         $this->cashType = $cashType;
-        $this->xml->writeElementCData('cashType', $this->cashType);
         return $this;
     }
 
@@ -199,7 +192,6 @@ class OptionalElements extends AbstractXml{
     public function setCustomControlled(?string $customControlled)
     {
         $this->customControlled = $customControlled;
-        $this->xml->writeElementCData('customControlled', $this->customControlled);
         return $this;
     }
 
@@ -213,7 +205,6 @@ class OptionalElements extends AbstractXml{
     public function setTermsOfPayment(?string $termsOfPayment)
     {
         $this->termsOfPayment = $termsOfPayment;
-        $this->xml->writeElementCData('termsOfPayment', $this->termsOfPayment);
         return $this;
     }
 }

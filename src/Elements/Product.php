@@ -1,9 +1,7 @@
 <?php
 
 namespace RS\TntExpress\Elements;
-
-use RS\TntExpress\Elements\AbstractXml;
-class Product extends AbstractXml {
+class Product {
 
     /**
      * @var string
@@ -34,6 +32,20 @@ class Product extends AbstractXml {
      * Element is optional
      */
     public $option;
+
+    /**
+     * @var string
+     * Element is required
+     */
+    public $id;
+
+    
+    /**
+     * @var string
+     * Element is required
+     */
+    public $service;
+
     
 
     /**
@@ -96,7 +108,6 @@ class Product extends AbstractXml {
     public function setLineOfBusiness(string $lineOfBusiness)
     {
         $this->lineOfBusiness = $lineOfBusiness;
-        $this->xml->writeElementCData('lineOfBusiness', $this->lineOfBusiness);
         return $this;
     }
 
@@ -110,7 +121,6 @@ class Product extends AbstractXml {
     public function setGroupId(string $groupId)
     {
         $this->groupId = $groupId;
-        $this->xml->writeElementCData('groupId', $this->groupId);
         return $this;
     }
 
@@ -124,7 +134,6 @@ class Product extends AbstractXml {
     public function setSubGroupId(string $subGroupId)
     {
         $this->subGroupId = $subGroupId;
-        $this->xml->writeElementCData('subGroupId', $this->subGroupId);
         return $this;
     }
 
@@ -138,7 +147,6 @@ class Product extends AbstractXml {
     public function setType(string $type)
     {
         $this->type = $type;
-        $this->xml->writeElementCData('type', $this->type);
         return $this;
     }
 
@@ -152,7 +160,54 @@ class Product extends AbstractXml {
     public function setOption(?string $option)
     {
         $this->option = $option;
-        $this->xml->writeElementCData('option', $this->option);
+        return $this;
+    }
+
+    /**
+     * Get element is optional
+     *
+     * @return  string
+     */ 
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set element is optional
+     *
+     * @param  string  $id  Element is optional
+     *
+     * @return  self
+     */ 
+    public function setId(string $id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    /**
+     * Get element is required
+     *
+     * @return  string
+     */ 
+    public function getService()
+    {
+        return $this->service;
+    }
+
+    /**
+     * Set element is required
+     *
+     * @param  string  $service  Element is required
+     *
+     * @return  self
+     */ 
+    public function setService(string $service)
+    {
+        $this->service = $service;
+
         return $this;
     }
 }

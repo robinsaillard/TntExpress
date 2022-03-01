@@ -3,19 +3,20 @@
 namespace RS\TntExpress\Services;
 
 use FluidXml\FluidXml;
-use RS\TntExpress\Locale;
-use RS\TntExpress\TntExpressLabel;
+use RS\TntExpress\TntExpress;
+use RS\TntExpress\TntExpressInfo;
 
-class LabelRequest
+class LabelRequest extends TntExpress
 {
     protected $url = "https://express.tnt.com/expresslabel/documentation/getlabel";
     protected $info; 
-    protected $errorCode;
-    protected $errorMessage;
-    protected $socketResponse;
 
-    public function __construct(TntExpressLabel $info) {
+    public function __construct(TntExpressInfo $info, $url = null) {
         $this->info = $info;
+        if(!is_null($url)){
+            $this->url = $url;
+        }
+        parent::__construct($info->getUserId(), $info->getPassword(), $this->url);
     }
 
     public function createLabel($consignmentNumber, $customerReference, $date)
@@ -38,7 +39,7 @@ class LabelRequest
                     "accountNumber" => $this->cD($this->info->account->accountNumber), 
                     "accountCountry" => $this->cD($this->info->account->accountCountry)
                 ], 
-                "totalNumberOfPieces" => $this->cD($this->info->totalNumberOfPieces->totalNumberOfPieces), 
+                "totalNumberOfPieces" => $this->cD($this->info->itemNumber), 
                 "pieceLine" => [
                     "identifier" => $this->cD($identifier), 
                     "goodsDescription" => $this->cD($pieceReference), 
@@ -51,7 +52,7 @@ class LabelRequest
                 ]
             ]
         ]; 
-        for ($i=0; $i < $this->info->totalNumberOfPieces->totalNumberOfPieces; $i++) { 
+        for ($i=0; $i < $this->info->itemNumber; $i++) { 
             $data["consignment"]["pieceLine"][] = [
                 "pieces" => [
                     "sequenceNumbers" => $this->cD($i + 1), 
@@ -87,12 +88,12 @@ class LabelRequest
     public function getProduct($product = null)
     {
         return [
-            "lineOfBusiness" => $this->cD(2), 
-            "groupId" => $this->cD(0), 
-            "subGroupId" => $this->cD(0), 
-            "id" => $this->cD("EX"), 
-            "type" => $this->cD("N"), 
-            "option" => $this->cD("")
+            "lineOfBusiness" => $this->cD($product->lineOfBusiness), 
+            "groupId" => $this->cD($product->groupId), 
+            "subGroupId" => $this->cD($product->subGroupId), 
+            "id" => $this->cD($product->id), 
+            "type" => $this->cD($product->type), 
+            "option" => $this->cD($product->option)
         ];
     }
 
@@ -102,46 +103,5 @@ class LabelRequest
             return "<![CDATA[" . $value . "]]>";
         }
         return null; 
-    }
-
-    public function httpPost($strRequest)
-    {
-        $ch=curl_init();
-        curl_setopt($ch, CURLOPT_URL, $this->url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        $userPass = "";
-        if ((trim($this->info->getUserId())!="") && (trim($this->info->getPassword())!="")) {
-            $userPass = $this->info->getUserId().":".$this->info->getPassword();
-            curl_setopt($ch, CURLOPT_USERPWD, $userPass);
-        }
-        curl_setopt($ch, CURLOPT_POST, 1) ;
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $strRequest);
-        $isSecure = strpos($this->url,"https://");
-
-        if ($isSecure===0) {
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-        } 
-        $result = curl_exec($ch);
-        $this->errorCode = curl_errno($ch);
-        $this->errorMessage = curl_error($ch);
-        $this->socketResponse = $result;
-        curl_close($ch); 
-    }
-
-    public function renderHtml($xml, $cssDir = null , $imgDir = null)
-    {
-        $scheme = $_SERVER['REQUEST_SCHEME'] . '://';
-        if (is_null($cssDir)) {
-            $cssDir = $scheme . $_SERVER['SERVER_NAME'] . "/bundles/tntexpress/css/";
-        }
-        if (is_null($imgDir)) {
-            $imgDir = $scheme .  $_SERVER['SERVER_NAME']."/bundles/tntexpress/images/"; 
-        }
-        $xslt = new \xsltProcessor();
-        $xslt->importStyleSheet(\DomDocument::load(Locale::loadXls("HTMLRoutingLabelRenderer")));
-        $xslt->setParameter('', 'css_dir', $cssDir);
-        $xslt->setParameter('', 'images_dir', $imgDir);
-        return $xslt->transformToXML(\DomDocument::loadXML($xml));
     }
 }

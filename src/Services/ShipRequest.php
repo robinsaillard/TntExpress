@@ -6,7 +6,7 @@ use DateTime;
 use Exception;
 use DateInterval;
 use FluidXml\FluidXml;
-use RS\TntExpress\TntExpressLabel;
+use RS\TntExpress\TntExpressInfo;
 use RS\TntExpress\Services\LabelRequest;
 
 class ShipRequest
@@ -25,14 +25,14 @@ class ShipRequest
     protected $url = "https://express.tnt.com/expressconnect/shipping/ship"; 
 
 
-    public function __construct(TntExpressLabel $label, $option, $url = null ) {
+    public function __construct(TntExpressInfo $label, $option, $url = null ) {
         $this->label = $label; 
         $this->reference = $label->consignmentIdentity->customerReference; 
         $this->sender = $label->sender;
         $this->receiver = $label->delivery;
         $this->account = $label->account; 
         $this->product = $label->product; 
-        $this->totalItems = $label->totalNumberOfPieces; 
+        $this->totalItems = $label->package->itemNumber; 
         $this->optional = $label->optionalElements; 
         $this->package = $label->package; 
         $this->option = $option;
@@ -147,16 +147,16 @@ class ShipRequest
             "CUSTOMERREF" => $this->cD($this->reference), 
             "CONTYPE" => $this->cD($this->product->type),
             "PAYMENTIND" => $this->cD($this->optional->termsOfPayment),
-            "ITEMS" => $this->cD($this->totalItems->totalNumberOfPieces),
-            "TOTALWEIGHT" => $this->cD(3),
-            "TOTALVOLUME" => $this->cD(1.0),
+            "ITEMS" => $this->cD($this->totalItems),
+            "TOTALWEIGHT" => $this->cD($this->package->weight),
+            "TOTALVOLUME" => $this->cD($this->package->totalVolume),
             "CURRENCY",
             "GOODSVALUE",
             "INSURANCEVALUE",
             "INSURANCECURRENCY",
-            "SERVICE" => $this->cD("48N"),
+            "SERVICE" => $this->cD($this->product->service),
             "OPTION" => $this->cD($this->product->option),
-            "DESCRIPTION" => $this->cD("TEST"),
+            "DESCRIPTION" => $this->cD($this->package->description),
             "DELIVERYINST" => $this->cD($this->optional->specialInstructions),
             "PACKAGE" => $this->setPackage($this->package)
         ];

@@ -17,7 +17,6 @@ abstract class TntExpress {
         $this->userId = $userId;
         $this->password = $password;
         $this->url = $url;
-        $this->initXml();
     }
 
     
@@ -56,52 +55,12 @@ abstract class TntExpress {
             $imgDir = $scheme .  $_SERVER['SERVER_NAME']."/bundles/tntexpress/images/"; 
         }
         $xslt = new \xsltProcessor();
-        $xslt->importStyleSheet(\DomDocument::load(__DIR__. '/Views/HTMLRoutingLabelRenderer.xsl'));
+        $xslt->importStyleSheet(\DomDocument::load(Locale::loadXls("HTMLRoutingLabelRenderer")));
         $xslt->setParameter('', 'css_dir', $cssDir);
         $xslt->setParameter('', 'images_dir', $imgDir);
         return $xslt->transformToXML(\DomDocument::loadXML($xml));
     }
 
-    public function initXml()
-    {
-        $this->xml = new XmlWriterOverride();
-        $this->xml->openMemory();
-        $this->xml->setIndent(true);
-    }
-
-    public function startDocument()
-    {
-        $this->xml->startDocument("1.0","UTF-8"); 
-        $this->xml->startElement("labelRequest");
-        $this->xml->startElement("consignment");
-        $this->xml->startAttribute("key"); 
-        $this->xml->text("CON1");
-        $this->xml->endAttribute();
-    }
-
-    public function endDocument()
-    {
-        $this->xml->endElement("consignment");
-        $this->xml->endElement("labelRequest");
-    }
-
-    public function createElement($element, $object)
-    {
-        $this->xml->startElement($element); 
-        $this->xml->writeRaw($object->getAsXml()); 
-        $this->xml->endElement();
-    }
-    
-    public function writeObjectRaw($object)
-    {
-        $this->xml->writeRaw($object->getAsXml()); 
-    }
-
-
-    public function flush()
-    {
-        return $this->xml->flush();
-    }
 
     /**
      * Get the value of errorCode

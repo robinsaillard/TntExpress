@@ -16,7 +16,7 @@ use RS\TntExpress\Elements\Pieces;
 use RS\TntExpress\Elements\Product;
 use RS\TntExpress\Elements\TotalNumberOfPieces;
 
-class TntExpressLabel extends TntExpress{
+class TntExpressInfo extends TntExpress{
 
     public $sender; 
     public $delivery; 
@@ -94,14 +94,16 @@ class TntExpressLabel extends TntExpress{
         return $this; 
     }
 
-    public function setProduct(string $lineOfBusiness, string $groupId, string $subGroupId, string $type, string $option = null)
+    public function setProduct(string $lineOfBusiness, string $groupId, string $subGroupId, string $type , string $id, string $service, string $option = null)
     {
         $this->product = new Product();
         $this->product->setLineOfBusiness($lineOfBusiness)
                       ->setGroupId($groupId)
                       ->setSubGroupId($subGroupId)
                       ->setType($type)
-                      ->setOption($option);
+                      ->setOption($option)
+                      ->setId($id)
+                      ->setService($service);
         return $this;
     }
 
@@ -131,42 +133,18 @@ class TntExpressLabel extends TntExpress{
         return $this;
     }
 
-    public function setTotalPieces(int $totalNumberOfPieces)
-    {
-        $this->totalNumberOfPieces = new TotalNumberOfPieces(); 
-        $this->totalNumberOfPieces->setTotalNumberOfPieces($totalNumberOfPieces);
-        return $this;
-    }
-
-    /**
-     * @param string $reference : Reference on label
-     * @param string $description : Description on label
-     * @param PieceMeasurements $mesurement : (length, width , height, weight)
-     * @param Pieces[] $pieces
-     */
-    public function setPieceLine(string $reference, string $description, PieceMeasurements $mesurement, array $pieces)
-    {
-        if ($this->totalNumberOfPieces->getTotalNumberOfPieces() > 0) {
-            $this->pieceLine = new PieceLine();
-            $this->pieceLine->setIdentifier($reference)
-                            ->setGoodsDescription($description)
-                            ->setPieceMeasurements($mesurement);
-            foreach ($pieces as $piece) {           
-                $this->pieceLine->setPieces($piece);
-            }
-            return $this;
-        }
-    }
-
     public function setPackage(int $itemNumber, int $poids, float $longueur, float $largeur, float $hauteur, string $description)
     {
+        $totalVolume = $longueur * $largeur * $hauteur; 
+
         $this->package = new Package();
         $this->package->setItemNumber($itemNumber)
                       ->setDescription($description)
                       ->setWeight($poids)
                       ->setWidth($longueur)
                       ->setLenght($largeur)
-                      ->setHeight($hauteur); 
+                      ->setHeight($hauteur)
+                      ->setTotalVolume($totalVolume);
         return $this; 
     }
 }

@@ -42,6 +42,12 @@ class Package {
      */
     public $weight;
 
+    /**
+     * @var float
+     * Element is required
+     */
+    public $totalVolume;
+
 
     /**
      * Get element is required
@@ -198,5 +204,29 @@ class Package {
         }else{
             throw new Exception("Le poids du colis ne doit pas dépasser 70.0 kg , votre poids est ". $weight);    
         }
+    }
+
+    /**
+     * Get element is required
+     *
+     * @return  float
+     */ 
+    public function getTotalVolume()
+    {
+        return $this->totalVolume;
+    }
+
+    /**
+     * Set element is required
+     *
+     * @param  float  $totalVolume  Element is required
+     *
+     * @return  self
+     */ 
+    public function setTotalVolume(float $totalVolume)
+    {
+        $this->totalVolume = $totalVolume;
+
+        return $this;
     }
 }

@@ -1,9 +1,7 @@
 <?php
 
 namespace RS\TntExpress\Elements;
-
-use RS\TntExpress\Elements\AbstractXml;
-class TotalNumberOfPieces extends AbstractXml {
+class TotalNumberOfPieces {
 
    
     /**
@@ -34,7 +32,6 @@ class TotalNumberOfPieces extends AbstractXml {
     public function setTotalNumberOfPieces(int $totalNumberOfPieces)
     {
         $this->totalNumberOfPieces = $totalNumberOfPieces;
-        $this->xml->writeElementCData('totalNumberOfPieces', $this->totalNumberOfPieces);
         return $this;
     }
 }
