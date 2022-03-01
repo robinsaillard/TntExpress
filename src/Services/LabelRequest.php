@@ -34,7 +34,7 @@ class LabelRequest extends TntExpress
                 "collectionDateTime" => $this->cD($date . "T16:30:00"), 
                 "sender" => $this->getAddress($this->info->sender),
                 "delivery" => $this->getAddress($this->info->delivery), 
-                "product" => $this->getProduct(),
+                "product" => $this->getProduct($this->info->product),
                 "account" => [
                     "accountNumber" => $this->cD($this->info->account->accountNumber), 
                     "accountCountry" => $this->cD($this->info->account->accountCountry)
@@ -85,7 +85,7 @@ class LabelRequest extends TntExpress
         return $res;
     }
 
-    public function getProduct($product = null)
+    public function getProduct($product)
     {
         return [
             "lineOfBusiness" => $this->cD($product->lineOfBusiness), 
