@@ -104,15 +104,15 @@ class LabelRequest extends TntExpress
         }
         return null; 
     }
-    
+
     public function httpPost($strRequest)
     {
         $ch=curl_init();
         curl_setopt($ch, CURLOPT_URL, $this->url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         $userPass = "";
-        if ((trim($this->userId)!="") && (trim($this->password)!="")) {
-            $userPass = $this->userId.":".$this->password;
+        if ((trim($this->info->getUserId())!="") && (trim($this->info->getPassword())!="")) {
+            $userPass = $this->info->getUserId().":".$this->info->getPassword();
             curl_setopt($ch, CURLOPT_USERPWD, $userPass);
         }
         curl_setopt($ch, CURLOPT_POST, 1) ;
