@@ -90,14 +90,20 @@ class ShipRequest
         $access = $this->sendToTNTServer($xml->__toString()); 
         $result = $this->sendToTNTServer("GET_RESULT:" . preg_replace("/[^0-9]/", "", $access));
         $xmlResult = new \SimpleXMLElement($result);
-
+        
         if ((string) $xmlResult->CREATE->SUCCESS === "Y") {
             $label = new LabelRequest($this->label); 
             $conNumber = preg_replace("/[^0-9]/", "",(string) $xmlResult->CREATE->CONNUMBER); 
             $conRef = (string) $xmlResult->CREATE->CONREF;
             $res = $label->createLabel($conNumber, $conRef, $date->format('Y-m-d'));   
             return $res;
-         }else {
+        }elseif((string) $xmlResult->ERROR->CODE !== ""){
+            echo "<p>Code : " . (string) $xmlResult->ERROR->CODE . "</p>";
+            echo "<p>Description : " . (string) $xmlResult->ERROR->DESCRIPTION . "</p>";
+            echo "<p>Source : " . (string) $xmlResult->ERROR->SOURCE . "</p>";
+            die();
+        }
+        else {
             throw new Exception("Erreur de génération d'étiquette.");           
         }
     }
