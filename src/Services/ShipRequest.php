@@ -92,8 +92,9 @@ class ShipRequest
         $xmlResult = new \SimpleXMLElement($result);
         
         if ((string) $xmlResult->CREATE->SUCCESS === "Y") {
-            $label = new LabelRequest($this->label); 
             $conNumber = preg_replace("/[^0-9]/", "",(string) $xmlResult->CREATE->CONNUMBER); 
+            $this->label->setConsignementIdentity($this->reference, $conNumber);
+            $label = new LabelRequest($this->label); 
             $conRef = (string) $xmlResult->CREATE->CONREF;
             $res = $label->createLabel($conNumber, $conRef, $date->format('Y-m-d'));   
             return $res;
