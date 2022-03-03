@@ -131,7 +131,7 @@ class TntExpressInfo extends TntExpress{
         return $this;
     }
 
-    public function setPackage(int $itemNumber, int $poids, float $longueur, float $largeur, float $hauteur, string $description)
+    public function setPackage(int $itemNumber, float $poids, float $longueur, float $largeur, float $hauteur, string $description)
     {
         $totalVolume = $longueur * $largeur * $hauteur; 
 
