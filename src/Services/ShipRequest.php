@@ -8,6 +8,7 @@ use DateInterval;
 use FluidXml\FluidXml;
 use RS\TntExpress\TntExpressInfo;
 use RS\TntExpress\Services\LabelRequest;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ShipRequest
 {
@@ -75,7 +76,7 @@ class ShipRequest
                                 "FROM" => "", 
                                 "TO" => ""
                             ], 
-                            "COLLINSTRUCTIONS" => $this->cD($this->optional->specialInstructions),                       
+                            "COLLINSTRUCTIONS" => $this->cD($this->package->description),                       
                         ]    
                     ], 
                     "CONSIGNMENT" => [
@@ -99,13 +100,25 @@ class ShipRequest
             $res = $label->createLabel($conNumber, $conRef, $date->format('Y-m-d'));   
             return $res;
         }elseif((string) $xmlResult->ERROR->CODE !== ""){
-            echo "<p>Code : " . (string) $xmlResult->ERROR->CODE . "</p>";
-            echo "<p>Description : " . (string) $xmlResult->ERROR->DESCRIPTION . "</p>";
-            echo "<p>Source : " . (string) $xmlResult->ERROR->SOURCE . "</p>";
-            die();
+            return new JsonResponse([
+                "code" => (string) $xmlResult->ERROR->CODE, 
+                "description" => (string) $xmlResult->ERROR->DESCRIPTION, 
+                "source" => (string) $xmlResult->ERROR->SOURCE
+            ], 401); 
+        }
+        elseif((string) $xmlResult->error_reason !== ""){
+            return new JsonResponse([
+                "code" => null,
+                "description" => (string) $xmlResult->error_reason . " // ". (string) $xmlResult->error_srcText, 
+                "source" => null
+            ], 401); 
         }
         else {
-            throw new Exception("Erreur de génération d'étiquette.");           
+            return new JsonResponse([
+                "code" => null,
+                "description" => "création étiquette impossible",
+                "source" => null
+            ], 401);       
         }
     }
 
