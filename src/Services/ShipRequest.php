@@ -162,7 +162,7 @@ class ShipRequest
     {
         $res = [
             "RECEIVER" => $this->getAddress($this->receiver),
-            "DELIVERY" => $this->getAddress($this->sender),
+            // "DELIVERY" => $this->getAddress($this->sender),
             "CONNUMBER",
             "CUSTOMERREF" => $this->cD($this->reference), 
             "CONTYPE" => $this->cD($this->product->type),
