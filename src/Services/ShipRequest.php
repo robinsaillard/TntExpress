@@ -25,8 +25,9 @@ class ShipRequest
 
     protected $url = "https://express.tnt.com/expressconnect/shipping/ship"; 
 
+    protected $urlLabel = "https://express.tnt.com/expresslabel/documentation/getlabel"; 
 
-    public function __construct(TntExpressInfo $label, $option, $url = null ) {
+    public function __construct(TntExpressInfo $label, $option, $url = null, $urlLabel = null) {
         $this->label = $label; 
         $this->reference = $label->consignmentIdentity->customerReference; 
         $this->sender = $label->sender;
@@ -37,6 +38,12 @@ class ShipRequest
         $this->optional = $label->optionalElements; 
         $this->package = $label->package; 
         $this->option = $option;
+        if(!is_null($url)){
+            $this->url = $url;
+        }
+        if(!is_null($urlLabel)){
+            $this->urlLabel = $urlLabel;
+        }
     }
 
     public function getShippingRequest()
@@ -95,7 +102,7 @@ class ShipRequest
         if ((string) $xmlResult->CREATE->SUCCESS === "Y") {
             $conNumber = preg_replace("/[^0-9]/", "",(string) $xmlResult->CREATE->CONNUMBER); 
             $this->label->setConsignementIdentity($this->reference, $conNumber);
-            $label = new LabelRequest($this->label); 
+            $label = new LabelRequest($this->label, $this->urlLabel); 
             $conRef = (string) $xmlResult->CREATE->CONREF;
             $res = $label->createLabel($conNumber, $conRef, $date->format('Y-m-d'));   
             return $res;
