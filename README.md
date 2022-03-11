@@ -14,11 +14,17 @@ Création d'étiquette tnt à l'international via le webservice (https://express
 `php bin/console assets:install`
 
 
-## Utilisation de base
+## Création étiquette en html
 ```php
+
+use RS\TntExpress\TntExpressInfo;
+use RS\TntExpress\Services\ShipRequest;
+
+
+
 $tnt = new TntExpressLabel("IdUser","password"); 
 
-$tnt->setConsignementIdentity(string $consignmentNumber, string $customerReference)
+$tnt->setConsignementIdentity(string $customerReference, string $consignmentNumber = null)
     ->setCollectionDateTime(DateTime $collectionDateTime)
 
     ->setSender(string $name, string $addressLine1, string $addressLine2 = null, string $addressLine3 = null, 
@@ -29,7 +35,8 @@ $tnt->setConsignementIdentity(string $consignmentNumber, string $customerReferen
                 string $town, string $exactMatch = null, string $province = null, string $postcode = null , 
                 string $country, string $contactName, string $dialCode, string $telephone, string $mail)
 
-    ->setProduct(string $lineOfBusiness, string $groupId, string $subGroupId, string $type, string $option = null)
+    ->setProduct(string $lineOfBusiness, string $groupId, string $subGroupId, string $type , string $id, 
+                 string $service, string $option = null)
 
     ->setAccount(string $accountNumber, string $accountCountry, string $contactName, string $dialCode, 
                  string $mail, string $telephone)
@@ -38,9 +45,8 @@ $tnt->setConsignementIdentity(string $consignmentNumber, string $customerReferen
                           string $cashCurrency = null , string $cashType = null , string $customControlled= null, 
                           string $termsOfPayment = null)
 
-    ->setTotalPieces(int $totalNumberOfPieces)
+    ->setPackage(int $itemNumber, float $poids, float $longueur, float $largeur, float $hauteur, string $description); 
 
-    ->setPackage(int $itemNumber, int $poids, float $longueur, float $largeur, float $hauteur, string $description); 
                 
 //$val = ["CREATE", "BOOK", "SHIP","PRINT"]
 $xml = new ShipRequest($tnt, $val);
@@ -48,4 +54,23 @@ $xml = new ShipRequest($tnt, $val);
 $html = $xml->getShippingRequest();
 
 echo $html; 
+```
+
+## Vérification code postal ou ville
+```php
+use RS\TntExpress\Services\TownPostRequest;
+
+$request = new TownPostRequest($tntExpress); 
+$result = $request->getTownPostRequest($pays = "FR", $ville,  $postcode); 
+
+//output : 
+$result : array(
+    array(
+        "searchItem" => 1,
+        "postcode" => "NNNNN",
+        "ville" => "xxxxxxxxx"
+    ), 
+    [...]
+    )
+
 ```
