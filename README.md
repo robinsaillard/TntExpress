@@ -1,7 +1,7 @@
-# TntExpress v1.0.1
+# TntExpress v1.0.11
 Création d'étiquette tnt à l'international via le webservice (https://express.tnt.com/expresswebservices-website/app/routinglabelrequest.html)
 
-## Installation 
+## Installation
 
 `composer install robinsaillard/tnt-express`
 
@@ -13,8 +13,8 @@ Création d'étiquette tnt à l'international via le webservice (https://express
 
 `php bin/console assets:install`
 
-
 ## Création étiquette en html
+
 ```php
 
 use RS\TntExpress\TntExpressInfo;
@@ -22,7 +22,7 @@ use RS\TntExpress\Services\ShipRequest;
 
 
 
-$tnt = new TntExpressLabel("IdUser","password"); 
+$tnt = new TntExpressInfo("IdUser","password"); 
 
 $tnt->setConsignementIdentity(string $customerReference, string $consignmentNumber = null)
     ->setCollectionDateTime(DateTime $collectionDateTime)
@@ -57,10 +57,13 @@ echo $html;
 ```
 
 ## Vérification code postal ou ville
+
 ```php
+use RS\TntExpress\TntExpressInfo;
 use RS\TntExpress\Services\TownPostRequest;
 
-$request = new TownPostRequest($tntExpress); 
+$tnt = new TntExpressInfo("IdUser","password"); 
+$request = new TownPostRequest($tnt); 
 $result = $request->getTownPostRequest($pays = "FR", $ville,  $postcode); 
 
 //output : 
@@ -70,7 +73,7 @@ $result : array(
         "postcode" => "NNNNN",
         "ville" => "xxxxxxxxx"
     ), 
-    [...]
-    )
+    [],
+);
 
 ```
