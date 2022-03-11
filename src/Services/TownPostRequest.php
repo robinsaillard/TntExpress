@@ -4,6 +4,7 @@ namespace RS\TntExpress\Services;
 
 use FluidXml\FluidXml;
 use RS\TntExpress\TntExpressInfo;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class TownPostRequest
 {
@@ -30,9 +31,18 @@ class TownPostRequest
         ]; 
         $xml->addchild($data); 
         $this->httpPost($xml->__toString());
-        echo $this->socketResponse;
-        die(); 
-        
+        $response = $this->socketResponse;
+        $xmlResult = new \SimpleXMLElement($response);
+        $res = []; 
+        foreach ($xmlResult as $key => $value) {
+            $res[] = [
+                "searchItem" =>(string) $value->searchItem, 
+                "postcode" =>(string) ($value->searchPCEndRange == $value->searchPCStartRange ? $value->searchPCStartRange : $value->searchPCEndRange),
+                "ville" =>(string) $value->searchTown
+
+            ];
+        }
+        return $res;
     }
 
     public function httpPost($strRequest)
