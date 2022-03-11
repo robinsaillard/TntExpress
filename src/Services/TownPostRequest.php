@@ -31,6 +31,8 @@ class TownPostRequest
         $xml->addchild($data); 
         $this->httpPost($xml->__toString());
         echo $this->socketResponse;
+        die(); 
+        
     }
 
     public function httpPost($strRequest)
