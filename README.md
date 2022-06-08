@@ -1,4 +1,4 @@
-# TntExpress v1.0.11
+# TntExpress v1.0.12
 Création d'étiquette tnt à l'international via le webservice (https://express.tnt.com/expresswebservices-website/app/routinglabelrequest.html)
 
 ## Installation
