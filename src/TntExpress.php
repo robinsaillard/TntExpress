@@ -2,16 +2,17 @@
 
 namespace RS\TntExpress;
 
-use RS\TntExpress\XmlWriterOverride;
+use DOMDocument;
+use XSLTProcessor;
 
 abstract class TntExpress {
 
     private $errorCode = 0;
     private $errorMessage = "";
     private $socketResponse = "";
-    private $userId; 
+    private $userId;
     private $password;
-    private $url; 
+    private $url;
 
     public function __construct($userId, $password, $url) {
         $this->userId = $userId;
@@ -29,17 +30,24 @@ abstract class TntExpress {
         if (is_null($imgDir)) {
             $imgDir = $scheme .  $_SERVER['SERVER_NAME']."/bundles/tntexpress/images/"; 
         }
-        $xslt = new \xsltProcessor();
-        $xslt->importStyleSheet(\DomDocument::load(Locale::loadXls("HTMLRoutingLabelRenderer")));
+        $XML = new DOMDocument();
+        $XML->loadXML($xml);
+
+        $xslt = new XSLTProcessor();
+
+        $XSL = new DOMDocument();
+        $XSL->load((new Locale)->loadXls("HTMLRoutingLabelRenderer"));
+        $xslt->importStylesheet($XSL);
         $xslt->setParameter('', 'css_dir', $cssDir);
         $xslt->setParameter('', 'images_dir', $imgDir);
-        return $xslt->transformToXML(\DomDocument::loadXML($xml));
+
+        return $xslt->transformToXML( $XML );
     }
 
 
     /**
      * Get the value of errorCode
-     */ 
+     */
     public function getErrorCode()
     {
         return $this->errorCode;
